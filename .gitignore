@@ -1,0 +1,9 @@
+*.spkg
+target/
+.idea
+node_modules
+replay.log
+.DS_Store
+.vscode
+build
+info.txt

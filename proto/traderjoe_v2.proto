@@ -1,0 +1,68 @@
+syntax = "proto3";
+
+import "google/protobuf/timestamp.proto";
+
+package traderjoe.v2;
+
+
+
+
+message Pair {
+  string address = 1;
+  Token token_x = 2;
+  Token token_y = 3;
+  string bin_step = 4;
+  string tx_hash = 10;
+  uint64 block_number = 11;
+  google.protobuf.Timestamp timestamp = 12;
+  uint32 log_index = 13;
+}
+
+message Pairs {
+  repeated Pair pairs = 1;
+}
+
+
+message Swap {
+  string pair_address = 1;
+  bytes amounts_in = 2;
+  bytes amounts_out  = 3;
+  string id = 4;
+  string tx_hash = 10;
+  uint64 block_number = 11;
+  google.protobuf.Timestamp timestamp = 12;
+  uint32 log_index = 13;
+}
+
+message Swaps {
+  repeated Swap swaps = 1;
+}
+
+message Candle {
+  string time = 1;
+  string period = 2;
+  string last_block = 3;
+  string token0 = 4;
+  string token1 = 5;
+  string high = 8;
+  string open = 9;
+  string close = 10;
+  string low = 11;
+  string token0_amount_traded = 12;
+  string token1_amount_traded = 13;
+}
+
+message Candles {
+  repeated Candle candles = 1;
+}
+
+message Token {
+  string name = 1;
+  string address = 2;
+  string decimal = 3;
+  string symbol = 4;
+}
+
+message Tokens {
+  repeated Token tokens = 1;
+}

@@ -1,0 +1,43 @@
+[package]
+name = "traderjoe-v2"
+version = "1.0.0"
+description = "TraderJoe v2 Substreams"
+edition = "2021"
+
+[lib]
+name = "substreams"
+crate-type = ["cdylib"]
+
+[dependencies]
+ethabi = "18.0.0"
+hex-literal = "0.4.1"
+bigdecimal = "0.4.1"
+prost = "0.12.1"
+substreams-entity-change = "1.2.2"
+
+hex = "0.4.3"
+num-bigint = "0.4"
+num-traits = "0.2.17"
+pad = "0.1"
+thiserror = "1.0.50"
+prost-types = "0.12.1"
+
+
+# Use latest from https://crates.io/crates/substreams
+substreams = "0.5.10"
+# Use latest from https://crates.io/crates/substreams-ethereum
+substreams-ethereum = "0.9.5"
+
+# Required so that ethabi > ethereum-types build correctly under wasm32-unknown-unknown
+[target.wasm32-unknown-unknown.dependencies]
+getrandom = { version = "0.2", features = ["custom"] }
+
+[build-dependencies]
+anyhow = "1"
+substreams-ethereum = "0.9.5"
+regex = "1.5.4"
+
+[profile.release]
+lto = true
+opt-level = 's'
+strip = "debuginfo"
