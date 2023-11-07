@@ -18,9 +18,9 @@ use substreams_entity_change::{pb::entity::EntityChanges, tables::Tables};
 
 use pb::traderjoe::v2 as traderjoe_v2;
 use substreams::{
-    pb::substreams::store_delta::Operation,
+    pb::substreams::{store_delta::Operation, StoreDelta},
     scalar::{BigDecimal, BigInt},
-    store::{DeltaProto, Deltas, StoreNew, StoreSet},
+    store::{StoreNew, StoreSet},
     Hex,
 };
 use substreams_ethereum::{pb::eth, Event};
@@ -80,8 +80,8 @@ pub fn map_swaps(block: eth::v2::Block) -> Result<traderjoe_v2::Swaps, Error> {
 
             swaps.push(traderjoe_v2::Swap {
                 pair_address: append_0x(&Hex(&log.address()).to_string()).to_lowercase(),
-                amounts_in: swap_event.amounts_in.to_vec(),
-                amounts_out: swap_event.amounts_out.to_vec(),
+                amounts_in: swap_event.amount_in.to_string(),
+                amounts_out: swap_event.amount_in.to_string(),
                 id: swap_event.id.to_string(),
                 block_number: block.number,
                 timestamp: block.timestamp_seconds(),
@@ -254,10 +254,8 @@ pub fn store_tokens(i: traderjoe_v2::Pairs, o: StoreSetProto<traderjoe_v2::Token
 }
 
 #[substreams::handlers::map]
-pub fn graph_out(
-    pairs: Deltas<DeltaProto<traderjoe_v2::Pair>>,
-    tokens: Deltas<DeltaProto<traderjoe_v2::Token>>,
-    candles: Deltas<DeltaProto<traderjoe_v2::Candle>>,
+pub fn graph_out(// tokens: Deltas<DeltaProto<traderjoe_v2::Token>>,
+    // candles: Deltas<DeltaProto<traderjoe_v2::Candle>>,
 ) -> Result<EntityChanges, Error> {
     let mut tables = Tables::new();
 

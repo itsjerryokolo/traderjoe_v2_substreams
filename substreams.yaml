@@ -1,11 +1,12 @@
 specVersion: v0.1.0
 package:
   name: traderjoe_v2
-  version: v0.1.0
+  version: v0.0.1
 
 imports:
   graph: https://github.com/streamingfast/substreams-sink-subgraph/releases/download/v0.1.0/substreams-sink-subgraph-protodefs-v0.1.0.spkg
   entity: https://github.com/streamingfast/substreams-entity-change/releases/download/v1.1.0/substreams-entity-change-v1.1.0.spkg
+
 
 protobuf:
   files:
@@ -19,21 +20,21 @@ binaries:
     file: ./target/wasm32-unknown-unknown/release/substreams.wasm
 
 modules:
-  - name: map_events
+  - name: map_pairs_created
     kind: map
     initialBlock: 17821282
     inputs:
       - source: sf.ethereum.type.v2.Block
     output:
-      type: proto:traderjoe.v2.Events
+      type: proto:traderjoe.v2.Pairs
 
 
   - name: graph_out
     kind: map
     initialBlock: 17821282
     inputs:
-      - map: map_events
+      - map: map_pairs_created
     output:
-      type: proto:sf.substreams.entity.v1.EntityChanges
+      type: proto:substreams.entity.v1.EntityChanges
 
 network: mainnet

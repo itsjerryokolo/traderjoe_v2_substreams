@@ -12,7 +12,7 @@ crate-type = ["cdylib"]
 ethabi = "18.0.0"
 hex-literal = "0.4.1"
 bigdecimal = "0.4.1"
-prost = "0.12.1"
+prost = "0.11.0"
 substreams-entity-change = "1.2.2"
 
 hex = "0.4.3"
@@ -20,7 +20,7 @@ num-bigint = "0.4"
 num-traits = "0.2.17"
 pad = "0.1"
 thiserror = "1.0.50"
-prost-types = "0.12.1"
+prost-types = "0.11.0"
 
 
 # Use latest from https://crates.io/crates/substreams

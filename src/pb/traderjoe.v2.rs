@@ -14,8 +14,8 @@ pub struct Pair {
     pub tx_hash: ::prost::alloc::string::String,
     #[prost(uint64, tag="11")]
     pub block_number: u64,
-    #[prost(message, optional, tag="12")]
-    pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(uint64, tag="12")]
+    pub timestamp: u64,
     #[prost(uint32, tag="13")]
     pub log_index: u32,
 }
@@ -30,18 +30,18 @@ pub struct Pairs {
 pub struct Swap {
     #[prost(string, tag="1")]
     pub pair_address: ::prost::alloc::string::String,
-    #[prost(bytes="vec", tag="2")]
-    pub amounts_in: ::prost::alloc::vec::Vec<u8>,
-    #[prost(bytes="vec", tag="3")]
-    pub amounts_out: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag="2")]
+    pub amounts_in: ::prost::alloc::string::String,
+    #[prost(string, tag="3")]
+    pub amounts_out: ::prost::alloc::string::String,
     #[prost(string, tag="4")]
     pub id: ::prost::alloc::string::String,
     #[prost(string, tag="10")]
     pub tx_hash: ::prost::alloc::string::String,
     #[prost(uint64, tag="11")]
     pub block_number: u64,
-    #[prost(message, optional, tag="12")]
-    pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(uint64, tag="12")]
+    pub timestamp: u64,
     #[prost(uint32, tag="13")]
     pub log_index: u32,
 }
