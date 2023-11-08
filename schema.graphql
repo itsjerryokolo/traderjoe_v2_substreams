@@ -511,60 +511,10 @@ type Transaction @entity {
   blockNumber: Int!
   timestamp: Int!
 
-  mints: [Mint!]! @derivedFrom(field: "transaction")
-  burns: [Burn!]! @derivedFrom(field: "transaction")
   swaps: [Swap!]! @derivedFrom(field: "transaction")
   flashed: [Flash!]! @derivedFrom(field: "transaction")
   collects: [Collect!]! @derivedFrom(field: "transaction")
   transfers: [Transfer!]! @derivedFrom(field: "transaction")
-}
-
-type Mint @entity {
-  # transaction hash + "#" + index in mints Transaction array
-  id: ID!
-  transaction: Transaction!
-  timestamp: Int! # need this to pull recent txns for specific token or pair
-  # pair
-  lbPair: LBPair!
-
-  # populated from the primary Transfer event
-  lbTokenAmount: BigInt!
-
-  # populated from the Mint event
-  sender: Bytes!
-  recipient: Bytes!
-  origin: Bytes!
-
-  amountX: BigDecimal!
-  amountY: BigDecimal!
-  # derived amount based on available prices of tokens
-  amountUSD: BigDecimal!
-
-  logIndex: BigInt!
-}
-
-type Burn @entity {
-  # transaction hash + "#" + index in burns Transaction array
-  id: ID!
-  transaction: Transaction!
-  timestamp: Int! # need this to pull recent txns for specific token or pair
-  # pair
-  lbPair: LBPair!
-
-  # populated from the primary Transfer event
-  lbTokenAmount: BigInt!
-
-  # populated from the Mint event
-  sender: Bytes!
-  recipient: Bytes!
-  origin: Bytes!
-
-  amountX: BigDecimal!
-  amountY: BigDecimal!
-  # derived amount based on available prices of tokens
-  amountUSD: BigDecimal!
-
-  logIndex: BigInt!
 }
 
 type Swap @entity {

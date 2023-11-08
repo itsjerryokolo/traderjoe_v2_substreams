@@ -20,7 +20,7 @@ binaries:
     file: ./target/wasm32-unknown-unknown/release/substreams.wasm
 
 modules:
-  - name: map_pairs_created
+  - name: map_map_pairs_created
     kind: map
     initialBlock: 17821282
     inputs:
@@ -28,8 +28,31 @@ modules:
     output:
       type: proto:traderjoe.v2.Pairs
 
+  - name: map_lbpair_ignored_state
+    kind: map
+    initialBlock: 17821282
+    inputs:
+      - source: sf.ethereum.type.v2.Block
+    output:
+      type: proto:traderjoe.v2.Pairs
 
-  - name: graph_out
+  - name: map_flashloan_fee_set
+    kind: map
+    initialBlock: 17821282
+    inputs:
+      - source: sf.ethereum.type.v2.Block
+    output:
+      type: proto:traderjoe.v2.Pairs
+
+  - name: map_fee_parameters_set
+    kind: map
+    initialBlock: 17821282
+    inputs:
+      - source: sf.ethereum.type.v2.Block
+    output:
+      type: proto:traderjoe.v2.Pairs
+
+  - name: map_graph_out
     kind: map
     initialBlock: 17821282
     inputs:

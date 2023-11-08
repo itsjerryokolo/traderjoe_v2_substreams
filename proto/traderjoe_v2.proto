@@ -16,12 +16,65 @@ message Pairs {
   repeated Pair pairs = 1;
 }
 
+message FlashLoan {
+  string sender = 1;
+  string origin = 2;
+  string recipient  = 3;
+  string lp_pair = 4;
+  string tx_hash = 10;
+  uint64 block_number = 11;
+  uint64 timestamp = 12;
+  uint32 log_index = 13;
+
+}
+
+message FlashLoans {
+  repeated FlashLoan flash_loans = 1;
+}
+
+message Collect {
+  string sender = 1;
+  string origin = 2;
+  string recipient  = 3;
+  string lp_pair = 4;
+  string tx_hash = 10;
+  uint64 block_number = 11;
+  uint64 timestamp = 12;
+  uint32 log_index = 13;
+
+}
+
+message Collects {
+  repeated Collect collects = 1;
+}
+
+message IgnoredPair {
+  string ignored_pair = 1;
+}
+
+message IgnoredPairs {
+  repeated string ignored_pairs = 1;
+}
+
+message LBPairParameterSet {
+  string lbpair_parameter_set = 1;
+}
+
+message LBPairParameterSets {
+  repeated string lbpair_parameter_sets = 1;
+}
+
 
 message Swap {
   string pair_address = 1;
-  string amounts_in = 2;
-  string amounts_out  = 3;
-  string id = 4;
+  string amountXIn = 2;
+  string amountYIn  = 3;
+  string amountXOut = 4;
+  string amountYOut  = 5;
+  string amountUSD = 6;
+  string sender = 7;
+  string origin = 8;
+  string recipient  = 9;
   string tx_hash = 10;
   uint64 block_number = 11;
   uint64 timestamp = 12;
@@ -32,29 +85,14 @@ message Swaps {
   repeated Swap swaps = 1;
 }
 
-message Candle {
-  string time = 1;
-  string period = 2;
-  string last_block = 3;
-  string token0 = 4;
-  string token1 = 5;
-  string high = 8;
-  string open = 9;
-  string close = 10;
-  string low = 11;
-  string token0_amount_traded = 12;
-  string token1_amount_traded = 13;
-}
 
-message Candles {
-  repeated Candle candles = 1;
-}
 
 message Token {
   string name = 1;
   string address = 2;
   string decimal = 3;
   string symbol = 4;
+  string total_supply = 5;
 }
 
 message Tokens {
