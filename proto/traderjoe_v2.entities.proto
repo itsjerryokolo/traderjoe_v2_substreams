@@ -1,0 +1,434 @@
+syntax = "proto3";
+package traderjoe.v2.entities;
+
+import "google/protobuf/timestamp.proto";
+
+
+message Pair {
+  string address = 1;
+  string bin_step = 4;
+  string tx_hash = 10;
+  uint64 block_number = 11;
+  google.protobuf.Timestamp timestamp = 12;
+  uint32 log_index = 13;
+}
+
+message Pairs {
+  repeated Pair pairs = 1;
+}
+
+
+
+message Bundle {
+  string id = 1;
+  double avax_price_usd = 2;
+}
+
+message Bundles {
+  repeated Bundle bundles = 1;
+}
+
+message LBFactory {
+  string id = 1;
+  int64 pair_count = 2;
+  double volume_usd = 3;
+  double volume_avax = 4;
+  double untracked_volume_usd = 5;
+  double total_value_locked_usd = 6;
+  double total_value_locked_avax = 7;
+  int64 tx_count = 8;
+  int64 token_count = 9;
+  int64 user_count = 10;
+  int64 flashloan_fee = 11;
+  repeated LBPair ignored_lb_pairs = 12;
+  double fees_usd = 13;
+  double fees_avax = 14;
+}
+
+message LBFactories {
+  repeated LBFactory lb_factories = 1;
+}
+
+message TraderJoeHourData {
+  string id = 1;
+  int32 date = 2;
+  LBFactory factory = 3;
+  double volume_avax = 4;
+  double volume_usd = 5;
+  double untracked_volume_usd = 6;
+  double total_value_locked_avax = 7;
+  double total_value_locked_usd = 8;
+  double fees_usd = 9;
+  int64 tx_count = 10;
+}
+
+message TraderJoeHourDatas {
+  repeated TraderJoeHourData trader_joe_hour_datas = 1;
+}
+
+
+message TraderJoeDayData {
+  string id = 1;
+  int32 date = 2;
+  LBFactory factory = 3;
+  double volume_avax = 4;
+  double volume_usd = 5;
+  double untracked_volume_usd = 6;
+  double total_value_locked_avax = 7;
+  double total_value_locked_usd = 8;
+  double fees_usd = 9;
+  int64 tx_count = 10;
+}
+
+message TraderJoeDayDatas {
+  repeated TraderJoeDayData trader_joe_day_datas = 1;
+}
+
+message Token {
+  string id = 1;
+  LBFactory factory = 2;
+  string symbol = 3;
+  string name = 4;
+  int64 decimals = 5;
+  int64 total_supply = 6;
+  double volume = 7;
+  double volume_usd = 8;
+  double untracked_volume_usd = 9;
+  int64 tx_count = 10;
+  double total_value_locked = 11;
+  double total_value_locked_usd = 12;
+  double derived_avax = 13;
+  double fees_usd = 14;
+}
+
+message Tokens {
+  repeated Token tokens = 1;
+}
+
+message TokenHourData {
+  string id = 1;
+  int32 date = 2;
+  Token token = 3;
+  double volume = 4;
+  double volume_avax = 5;
+  double volume_usd = 6;
+  int64 tx_count = 7;
+  double total_value_locked = 8;
+  double total_value_locked_avax = 9;
+  double total_value_locked_usd = 10;
+  double price_usd = 11;
+  double fees_usd = 12;
+  double open = 13;
+  double high = 14;
+  double low = 15;
+  double close = 16;
+}
+
+message TokenHourDatas {
+  repeated TokenHourData token_hour_datas = 1;
+}
+
+
+message TokenDayData {
+  string id = 1;
+  int32 date = 2;
+  Token token = 3;
+  double volume = 4;
+  double volume_avax = 5;
+  double volume_usd = 6;
+  int64 tx_count = 7;
+  double total_value_locked = 8;
+  double total_value_locked_avax = 9;
+  double total_value_locked_usd = 10;
+  double price_usd = 11;
+  double fees_usd = 12;
+  double open = 13;
+  double high = 14;
+  double low = 15;
+  double close = 16;
+}
+
+message TokenDayDatas {
+  repeated TokenDayData token_day_datas = 1;
+}
+
+message SJoeDayData {
+  string id = 1;
+  int32 date = 2;
+  double amount_x = 3;
+  double amount_y = 4;
+  double collected_avax = 5;
+  double collected_usd = 6;
+}
+
+message SJoeDayDatas {
+  repeated SJoeDayData sjoe_day_datas = 1;
+}
+
+message LBPair {
+  string id = 1;
+  LBFactory factory = 2;
+  string name = 3;
+  double base_fee_pct = 4;
+  Token token_x = 5;
+  Token token_y = 6;
+  int64 bin_step = 7;
+  int64 active_id = 8;
+  double reserve_x = 9;
+  double reserve_y = 10;
+  double total_value_locked_avax = 11;
+  double total_value_locked_usd = 12;
+  double token_x_price = 13;
+  double token_y_price = 14;
+  double token_x_price_usd = 15;
+  double token_y_price_usd = 16;
+  double volume_token_x = 17;
+  double volume_token_y = 18;
+  double volume_usd = 19;
+  double untracked_volume_usd = 20;
+  int64 tx_count = 21;
+  double fees_token_x = 22;
+  double fees_token_y = 23;
+  double fees_usd = 24;
+  int64 liquidity_provider_count = 25;
+  google.protobuf.Timestamp timestamp = 26;
+  int64 block = 27;
+}
+
+message LBPairs {
+  repeated LBPair lb_pairs = 1;
+}
+
+message LBPairParameterSet {
+  string id = 1;
+  bytes sender = 2;
+  LBPair lb_pair = 3;
+  int64 bin_step = 4;
+  int64 base_factor = 5;
+  int64 filter_period = 6;
+  int64 decay_period = 7;
+  int64 reduction_factor = 8;
+  int64 variable_fee_control = 9;
+  int64 protocol_share = 10;
+  double protocol_share_pct = 11;
+  int64 max_volatility_accumulated = 12;
+}
+
+message LBPairParameterSets {
+  repeated LBPairParameterSet lb_pair_parameter_sets = 1;
+}
+
+message Bin {
+  string id = 1;
+  LBPair lb_pair = 2;
+  double price_x = 3;
+  double price_y = 4;
+  int64 total_supply = 5;
+  double reserve_x = 6;
+  double reserve_y = 7;
+  int64 bin_id = 8;
+  repeated string liquidity_providers = 9;
+  int64 liquidity_provider_count = 10;
+}
+
+message Bins {
+  repeated Bin bins = 1;
+}
+
+message LBPairDayData {
+  string id = 1;
+  int32 date = 2;
+  LBPair lb_pair = 3;
+  Token token_x = 4;
+  Token token_y = 5;
+  double reserve_x = 6;
+  double reserve_y = 7;
+  double total_value_locked_usd = 8;
+  double volume_token_x = 9;
+  double volume_token_y = 10;
+  double volume_usd = 11;
+  double untracked_volume_usd = 12;
+  int64 tx_count = 13;
+  double fees_usd = 14;
+}
+
+message LBPairDayDatas {
+  repeated LBPairDayData lb_pair_day_datas = 1;
+}
+
+
+
+message LBPairHourData {
+  string id = 1;
+  int32 date = 2;
+  LBPair lb_pair = 3;
+  Token token_x = 4;
+  Token token_y = 5;
+  double reserve_x = 6;
+  double reserve_y = 7;
+  double total_value_locked_usd = 8;
+  double volume_token_x = 9;
+  double volume_token_y = 10;
+  double volume_usd = 11;
+  double untracked_volume_usd = 12;
+  int64 tx_count = 13;
+  double fees_usd = 14;
+}
+
+message LBPairHourDatas {
+  repeated LBPairHourData lb_pair_hour_datas = 1;
+}
+
+message LiquidityPosition {
+  string id = 1;
+  string string = 2;
+  LBPair lb_pair = 3;
+  int64 bins_count = 4;
+  int32 block = 5;
+  google.protobuf.Timestamp timestamp = 6;
+}
+
+message LiquidityPositions {
+  repeated LiquidityPosition liquidity_positions = 1;
+}
+
+message UserBinLiquidity {
+  string id = 1;
+  LiquidityPosition liquidity_position = 2;
+  Bin lb_pair_bin_id = 3;
+  LBPair lb_pair = 4;
+  string string = 5;
+  int64 bin_id = 6;
+  int64 liquidity = 7;
+  int32 block = 8;
+  google.protobuf.Timestamp timestamp = 9;
+}
+
+message UserBinLiquidities {
+  repeated UserBinLiquidity user_bin_liquidities = 1;
+}
+
+message UserFeesData {
+  string id = 1;
+  string string = 2;
+  LBPair lb_pair = 3;
+  double accrued_fees_x = 4;
+  double accrued_fees_y = 5;
+  double accrued_fees_l = 6;
+  double collected_fees_x = 7;
+  double collected_fees_y = 8;
+}
+
+message UserFeesDatas {
+  repeated UserFeesData user_fees_datas = 1;
+}
+
+message UserFeesHourData {
+  string id = 1;
+  int32 date = 2;
+  string string = 3;
+  LBPair lb_pair = 4;
+  double accrued_fees_x = 5;
+  double accrued_fees_y = 6;
+  double accrued_fees_l = 7;
+  double collected_fees_x = 8;
+  double collected_fees_y = 9;
+}
+
+message UserFeesHourDatas {
+  repeated UserFeesHourData user_fees_hour_datas = 1;
+}
+
+message Transaction {
+  string id = 1;
+  int32 block_number = 2;
+  google.protobuf.Timestamp timestamp = 3;
+}
+
+message Transactions {
+  repeated Transaction transactions = 1;
+}
+
+message Swap {
+  string id = 1;
+  Transaction transaction = 2;
+  google.protobuf.Timestamp timestamp = 3;
+  LBPair lb_pair = 4;
+  bytes sender = 5;
+  bytes recipient = 6;
+  bytes origin = 7;
+  int64 active_id = 8;
+  double amount_x_in = 9;
+  double amount_y_in = 10;
+  double amount_x_out = 11;
+  double amount_y_out = 12;
+  double amount_usd = 13;
+  double fees_token_x = 14;
+  double fees_token_y = 15;
+  double fees_usd = 16;
+  int64 log_index = 17;
+}
+
+message Swaps {
+  repeated Swap swaps = 1;
+}
+
+message Flash {
+  string id = 1;
+  Transaction transaction = 2;
+  google.protobuf.Timestamp timestamp = 3;
+  LBPair lb_pair = 4;
+  bytes sender = 5;
+  bytes origin = 6;
+  bytes recipient = 7;
+  Token token = 8;
+  double amount = 9;
+  double amount_usd = 10;
+  double fees = 11;
+  double fees_usd = 12;
+  int64 log_index = 13;
+}
+
+message Flashes {
+  repeated Flash flashes = 1;
+}
+
+message Collect {
+  string id = 1;
+  Transaction transaction = 2;
+  google.protobuf.Timestamp timestamp = 3;
+  LBPair lb_pair = 4;
+  double amount_x = 5;
+  double amount_y = 6;
+  string recipient = 7;
+  bytes origin = 8;
+  double collected_avax = 9;
+  double collected_usd = 10;
+  int64 log_index = 11;
+}
+
+message Collects {
+  repeated Collect collects = 1;
+}
+
+message Transfer {
+  string id = 1;
+  Transaction transaction = 2;
+  google.protobuf.Timestamp timestamp = 3;
+  bool is_batch = 4;
+  int32 batch_index = 5;
+  bool is_mint = 6;
+  bool is_burn = 7;
+  LBPair lb_pair = 8;
+  int64 bin_id = 9;
+  int64 amount = 10;
+  bytes sender = 11;
+  bytes from = 12;
+  bytes to = 13;
+  bytes origin = 14;
+  int64 log_index = 15;
+}
+
+message Transfers {
+  repeated Transfer transfers = 1;
+}

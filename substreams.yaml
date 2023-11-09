@@ -10,7 +10,8 @@ imports:
 
 protobuf:
   files:
-    - traderjoe_v2.proto
+    - traderjoe_v2.entities.proto
+    - traderjoe_v2.events.proto
   importPaths:
     - ./proto
 
@@ -20,7 +21,7 @@ binaries:
     file: ./target/wasm32-unknown-unknown/release/substreams.wasm
 
 modules:
-  - name: map_map_pairs_created
+  - name: map_factory_events
     kind: map
     initialBlock: 17821282
     inputs:
@@ -28,35 +29,99 @@ modules:
     output:
       type: proto:traderjoe.v2.Pairs
 
-  - name: map_lbpair_ignored_state
-    kind: map
-    initialBlock: 17821282
-    inputs:
-      - source: sf.ethereum.type.v2.Block
-    output:
-      type: proto:traderjoe.v2.Pairs
+  # - name: map_lbpair_ignored_state
+  #   kind: map
+  #   initialBlock: 17821282
+  #   inputs:
+  #     - source: sf.ethereum.type.v2.Block
+  #   output:
+  #     type: proto:traderjoe.v2.IgnoredPair
 
-  - name: map_flashloan_fee_set
-    kind: map
-    initialBlock: 17821282
-    inputs:
-      - source: sf.ethereum.type.v2.Block
-    output:
-      type: proto:traderjoe.v2.Pairs
+  # - name: map_flashloan_fee_set
+  #   kind: map
+  #   initialBlock: 17821282
+  #   inputs:
+  #     - source: sf.ethereum.type.v2.Block
+  #   output:
+  #     type: proto:traderjoe.v2.FlashLoanFeeSet
 
-  - name: map_fee_parameters_set
-    kind: map
-    initialBlock: 17821282
-    inputs:
-      - source: sf.ethereum.type.v2.Block
-    output:
-      type: proto:traderjoe.v2.Pairs
+  # - name: map_fee_parameters_set
+  #   kind: map
+  #   initialBlock: 17821282
+  #   inputs:
+  #     - source: sf.ethereum.type.v2.Block
+  #   output:
+  #     type: proto:traderjoe.v2.LBPairParameterSet
+
+  # - name: map_flash_loan
+  #   kind: map
+  #   initialBlock: 17821282
+  #   inputs:
+  #     - source: sf.ethereum.type.v2.Block
+  #   output:
+  #     type: proto:traderjoe.v2.FlashLoans
+
+  # - name: map_composition_fee
+  #   kind: map
+  #   initialBlock: 17821282
+  #   inputs:
+  #     - source: sf.ethereum.type.v2.Block
+  #   output:
+  #     type: proto:traderjoe.v2.CompositionFees
+
+  # - name: map_deposited_to_bin
+  #   kind: map
+  #   initialBlock: 17821282
+  #   inputs:
+  #     - source: sf.ethereum.type.v2.Block
+  #   output:
+  #     type: proto:traderjoe.v2.DepositedToBins
+
+  # - name: map_withdrawn_from_bin
+  #   kind: map
+  #   initialBlock: 17821282
+  #   inputs:
+  #     - source: sf.ethereum.type.v2.Block
+  #   output:
+  #     type: proto:traderjoe.v2.WithdrawnFromBins
+
+  # - name: map_fees_collected
+  #   kind: map
+  #   initialBlock: 17821282
+  #   inputs:
+  #     - source: sf.ethereum.type.v2.Block
+  #   output:
+  #     type: proto:traderjoe.v2.FeesCollected
+
+  # - name: map_protocol_fees_collected
+  #   kind: map
+  #   initialBlock: 17821282
+  #   inputs:
+  #     - source: sf.ethereum.type.v2.Block
+  #   output:
+  #     type: proto:traderjoe.v2.ProtocolFeesCollected
+
+  # - name: map_transfer_single
+  #   kind: map
+  #   initialBlock: 17821282
+  #   inputs:
+  #     - source: sf.ethereum.type.v2.Block
+  #   output:
+  #     type: proto:traderjoe.v2.TransferSingle
+
+  # - name: map_transfer_batch
+  #   kind: map
+  #   initialBlock: 17821282
+  #   inputs:
+  #     - source: sf.ethereum.type.v2.Block
+  #   output:
+  #     type: proto:traderjoe.v2.TransferBatch
 
   - name: map_graph_out
     kind: map
     initialBlock: 17821282
     inputs:
-      - map: map_pairs_created
+      - map: map_factory_events
     output:
       type: proto:substreams.entity.v1.EntityChanges
 

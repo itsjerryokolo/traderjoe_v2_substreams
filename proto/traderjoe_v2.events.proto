@@ -1,0 +1,151 @@
+syntax = "proto3";
+package traderjoe.v2.events;
+
+import "google/protobuf/timestamp.proto";
+
+
+message FactoryEvents {
+  repeated FeeParametersSet fee_parameters_sets = 1;
+  repeated FlashLoanFeeSet flash_loan_fee_sets = 2;
+  repeated LbPairCreated lb_pair_createds = 3;
+  repeated LbPairIgnoredStateChanged lb_pair_ignored_state_changeds = 4;
+}
+
+message FeeParametersSet {
+    string evt_tx_hash = 1;
+    uint32 evt_index = 2;
+    google.protobuf.Timestamp evt_block_time = 3;
+    uint64 evt_block_number = 4;
+    string bin_step = 5;
+    string base_factor = 6;
+    string filter_period = 7;
+    string decay_period = 8;
+    string reduction_factor = 9;
+    string variable_fee_control = 10;
+    string protocol_share = 11;
+    string max_volatility_accumulator = 12;
+}
+
+message FlashLoanFeeSet {
+  string evt_tx_hash = 1;
+  uint32 evt_index = 2;
+  google.protobuf.Timestamp evt_block_time = 3;
+  uint64 evt_block_number = 4;
+  string old_flash_loan_fee = 5;
+  string new_flash_loan_fee = 6;
+}
+
+message LbPairCreated {
+  string evt_tx_hash = 1;
+  uint32 evt_index = 2;
+  google.protobuf.Timestamp evt_block_time = 3;
+  uint64 evt_block_number = 4;
+  bytes token_x = 5;
+  bytes token_y = 6;
+  string bin_step = 7;
+  bytes lb_pair = 8;
+  string pid = 9;
+}
+
+message LbPairIgnoredStateChanged {
+  string evt_tx_hash = 1;
+  uint32 evt_index = 2;
+  google.protobuf.Timestamp evt_block_time = 3;
+  uint64 evt_block_number = 4;
+  bytes lb_pair = 5;
+  bool ignored = 6;
+}
+
+
+
+
+// Template Event
+
+
+
+message TemplateEvents {
+  repeated Swap swaps = 10;
+  repeated FlashLoan flash_loans = 7;
+  repeated CompositionFee composition_fees = 4;
+  repeated DepositedToBin deposited_to_bins = 5;
+  repeated WithdrawnFromBin withdrawn_from_bins = 13;
+  repeated FeesCollected fees_collected = 6;
+  repeated ProtocolFeesCollected protocol_fees_collected = 9;
+  repeated TransferSingle transfer_singles = 12;
+  repeated TransferBatch transfer_batches = 11;
+}
+
+
+message CompositionFee {
+  bytes sender = 1;
+  bytes recipient = 2;
+  uint64 id = 3;
+  uint64 feesX = 4;
+  uint64 feesY = 5;
+}
+
+message DepositedToBin {
+  bytes sender = 1;
+  bytes recipient = 2;
+  uint64 id = 3;
+  uint64 amountX = 4;
+  uint64 amountY = 5;
+}
+
+message FeesCollected {
+  bytes sender = 1;
+  bytes recipient = 2;
+  uint64 amountX = 3;
+  uint64 amountY = 4;
+}
+
+message FlashLoan {
+  bytes sender = 1;
+  bytes receiver = 2;
+  bytes token = 3;
+  uint64 amount = 4;
+  uint64 fee = 5;
+}
+
+
+message ProtocolFeesCollected {
+  bytes sender = 1;
+  bytes recipient = 2;
+  uint64 amountX = 3;
+  uint64 amountY = 4;
+}
+
+message Swap {
+  bytes sender = 1;
+  bytes recipient = 2;
+  uint64 id = 3;
+  bool swapForY = 4;
+  uint64 amountIn = 5;
+  uint64 amountOut = 6;
+  uint64 volatility_accumulated = 7;
+  uint64 fees = 8;
+}
+
+message TransferBatch {
+  bytes sender = 1;
+  bytes from = 2;
+  bytes to = 3;
+  repeated uint64 ids = 4;
+  repeated uint64 amounts = 5;
+}
+
+message TransferSingle {
+  bytes sender = 1;
+  bytes from = 2;
+  bytes to = 3;
+  uint64 id = 4;
+  uint64 amount = 5;
+}
+
+message WithdrawnFromBin {
+  bytes sender = 1;
+  bytes recipient = 2;
+  uint64 id = 3;
+  uint64 amountX = 4;
+  uint64 amountY = 5;
+}

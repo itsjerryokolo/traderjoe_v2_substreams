@@ -1,7 +1,2 @@
-mod bin;
-mod fees;
-mod flashloans;
-mod lbfactory;
-mod lbpair;
-mod swaps;
-mod transfer;
+pub mod factory_events;
+pub mod template_events;

@@ -571,7 +571,7 @@ type Flash @entity {
 type Collect @entity {
   # transaction hash + "#" + index in collect Transaction array
   id: ID!
-  transaction: Transaction!
+  transaction: Transaction!9
   timestamp: Int!
 
   lbPair: LBPair!
