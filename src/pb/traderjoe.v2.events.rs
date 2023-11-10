@@ -72,8 +72,8 @@ pub struct LbPairCreated {
     pub token_y: ::prost::alloc::vec::Vec<u8>,
     #[prost(string, tag="7")]
     pub bin_step: ::prost::alloc::string::String,
-    #[prost(bytes="vec", tag="8")]
-    pub lb_pair: ::prost::alloc::vec::Vec<u8>,
+    #[prost(string, tag="8")]
+    pub lb_pair: ::prost::alloc::string::String,
     #[prost(string, tag="9")]
     pub pid: ::prost::alloc::string::String,
 }
@@ -93,57 +93,28 @@ pub struct LbPairIgnoredStateChanged {
     #[prost(bool, tag="6")]
     pub ignored: bool,
 }
-// Template Event
-
+/// Template Events
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct TemplateEvents {
-    #[prost(message, repeated, tag="2")]
-    pub approval_for_alls: ::prost::alloc::vec::Vec<ApprovalForAll>,
-    #[prost(message, repeated, tag="3")]
-    pub burns: ::prost::alloc::vec::Vec<Burn>,
+    #[prost(message, repeated, tag="10")]
+    pub swaps: ::prost::alloc::vec::Vec<Swap>,
+    #[prost(message, repeated, tag="7")]
+    pub flash_loans: ::prost::alloc::vec::Vec<FlashLoan>,
     #[prost(message, repeated, tag="4")]
     pub composition_fees: ::prost::alloc::vec::Vec<CompositionFee>,
     #[prost(message, repeated, tag="5")]
     pub deposited_to_bins: ::prost::alloc::vec::Vec<DepositedToBin>,
-    #[prost(message, repeated, tag="6")]
-    pub fees_collected: ::prost::alloc::vec::Vec<FeesCollected>,
-    #[prost(message, repeated, tag="7")]
-    pub flash_loans: ::prost::alloc::vec::Vec<FlashLoan>,
-    #[prost(message, repeated, tag="8")]
-    pub oracle_size_increased: ::prost::alloc::vec::Vec<OracleSizeIncreased>,
-    #[prost(message, repeated, tag="9")]
-    pub protocol_fees_collected: ::prost::alloc::vec::Vec<ProtocolFeesCollected>,
-    #[prost(message, repeated, tag="10")]
-    pub swaps: ::prost::alloc::vec::Vec<Swap>,
-    #[prost(message, repeated, tag="11")]
-    pub transfer_batches: ::prost::alloc::vec::Vec<TransferBatch>,
-    #[prost(message, repeated, tag="12")]
-    pub transfer_singles: ::prost::alloc::vec::Vec<TransferSingle>,
     #[prost(message, repeated, tag="13")]
     pub withdrawn_from_bins: ::prost::alloc::vec::Vec<WithdrawnFromBin>,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct ApprovalForAll {
-    #[prost(bytes="vec", tag="1")]
-    pub account: ::prost::alloc::vec::Vec<u8>,
-    #[prost(bytes="vec", tag="2")]
-    pub sender: ::prost::alloc::vec::Vec<u8>,
-    #[prost(bool, tag="3")]
-    pub approved: bool,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct Burn {
-    #[prost(bytes="vec", tag="1")]
-    pub sender: ::prost::alloc::vec::Vec<u8>,
-    #[prost(bytes="vec", tag="2")]
-    pub recipient: ::prost::alloc::vec::Vec<u8>,
-    #[prost(uint64, tag="3")]
-    pub amount_x: u64,
-    #[prost(uint64, tag="4")]
-    pub amount_y: u64,
+    #[prost(message, repeated, tag="6")]
+    pub fees_collected: ::prost::alloc::vec::Vec<FeesCollected>,
+    #[prost(message, repeated, tag="9")]
+    pub protocol_fees_collected: ::prost::alloc::vec::Vec<ProtocolFeesCollected>,
+    #[prost(message, repeated, tag="12")]
+    pub transfer_singles: ::prost::alloc::vec::Vec<TransferSingle>,
+    #[prost(message, repeated, tag="11")]
+    pub transfer_batches: ::prost::alloc::vec::Vec<TransferBatch>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -158,6 +129,14 @@ pub struct CompositionFee {
     pub fees_x: u64,
     #[prost(uint64, tag="5")]
     pub fees_y: u64,
+    #[prost(string, tag="10")]
+    pub evt_tx_hash: ::prost::alloc::string::String,
+    #[prost(uint32, tag="11")]
+    pub evt_index: u32,
+    #[prost(message, optional, tag="12")]
+    pub evt_block_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(uint64, tag="13")]
+    pub evt_block_number: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -172,6 +151,14 @@ pub struct DepositedToBin {
     pub amount_x: u64,
     #[prost(uint64, tag="5")]
     pub amount_y: u64,
+    #[prost(string, tag="10")]
+    pub evt_tx_hash: ::prost::alloc::string::String,
+    #[prost(uint32, tag="11")]
+    pub evt_index: u32,
+    #[prost(message, optional, tag="12")]
+    pub evt_block_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(uint64, tag="13")]
+    pub evt_block_number: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -198,14 +185,14 @@ pub struct FlashLoan {
     pub amount: u64,
     #[prost(uint64, tag="5")]
     pub fee: u64,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct OracleSizeIncreased {
-    #[prost(uint64, tag="1")]
-    pub previous_size: u64,
-    #[prost(uint64, tag="2")]
-    pub new_size: u64,
+    #[prost(string, tag="10")]
+    pub evt_tx_hash: ::prost::alloc::string::String,
+    #[prost(uint32, tag="11")]
+    pub evt_index: u32,
+    #[prost(message, optional, tag="12")]
+    pub evt_block_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(uint64, tag="13")]
+    pub evt_block_number: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -218,6 +205,14 @@ pub struct ProtocolFeesCollected {
     pub amount_x: u64,
     #[prost(uint64, tag="4")]
     pub amount_y: u64,
+    #[prost(string, tag="10")]
+    pub evt_tx_hash: ::prost::alloc::string::String,
+    #[prost(uint32, tag="11")]
+    pub evt_index: u32,
+    #[prost(message, optional, tag="12")]
+    pub evt_block_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(uint64, tag="13")]
+    pub evt_block_number: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -226,8 +221,8 @@ pub struct Swap {
     pub sender: ::prost::alloc::vec::Vec<u8>,
     #[prost(bytes="vec", tag="2")]
     pub recipient: ::prost::alloc::vec::Vec<u8>,
-    #[prost(uint64, tag="3")]
-    pub id: u64,
+    #[prost(string, tag="3")]
+    pub id: ::prost::alloc::string::String,
     #[prost(bool, tag="4")]
     pub swap_for_y: bool,
     #[prost(uint64, tag="5")]
@@ -238,6 +233,14 @@ pub struct Swap {
     pub volatility_accumulated: u64,
     #[prost(uint64, tag="8")]
     pub fees: u64,
+    #[prost(string, tag="10")]
+    pub evt_tx_hash: ::prost::alloc::string::String,
+    #[prost(uint32, tag="11")]
+    pub evt_index: u32,
+    #[prost(message, optional, tag="12")]
+    pub evt_block_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(uint64, tag="13")]
+    pub evt_block_number: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -248,10 +251,18 @@ pub struct TransferBatch {
     pub from: ::prost::alloc::vec::Vec<u8>,
     #[prost(bytes="vec", tag="3")]
     pub to: ::prost::alloc::vec::Vec<u8>,
-    #[prost(uint64, repeated, tag="4")]
-    pub ids: ::prost::alloc::vec::Vec<u64>,
-    #[prost(uint64, repeated, tag="5")]
-    pub amounts: ::prost::alloc::vec::Vec<u64>,
+    #[prost(string, repeated, tag="4")]
+    pub ids: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, repeated, tag="5")]
+    pub amounts: ::prost::alloc::vec::Vec<::prost::alloc::string::String>,
+    #[prost(string, tag="10")]
+    pub evt_tx_hash: ::prost::alloc::string::String,
+    #[prost(uint32, tag="11")]
+    pub evt_index: u32,
+    #[prost(message, optional, tag="12")]
+    pub evt_block_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(uint64, tag="13")]
+    pub evt_block_number: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -266,6 +277,14 @@ pub struct TransferSingle {
     pub id: u64,
     #[prost(uint64, tag="5")]
     pub amount: u64,
+    #[prost(string, tag="10")]
+    pub evt_tx_hash: ::prost::alloc::string::String,
+    #[prost(uint32, tag="11")]
+    pub evt_index: u32,
+    #[prost(message, optional, tag="12")]
+    pub evt_block_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(uint64, tag="13")]
+    pub evt_block_number: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -280,5 +299,13 @@ pub struct WithdrawnFromBin {
     pub amount_x: u64,
     #[prost(uint64, tag="5")]
     pub amount_y: u64,
+    #[prost(string, tag="10")]
+    pub evt_tx_hash: ::prost::alloc::string::String,
+    #[prost(uint32, tag="11")]
+    pub evt_index: u32,
+    #[prost(message, optional, tag="12")]
+    pub evt_block_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(uint64, tag="13")]
+    pub evt_block_number: u64,
 }
 // @@protoc_insertion_point(module)

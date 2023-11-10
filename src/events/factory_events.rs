@@ -89,7 +89,7 @@ fn map_factory_events(
                                 evt_block_time: Some(blk.timestamp().to_owned()),
                                 evt_block_number: blk.number,
                                 bin_step: event.bin_step.to_string(),
-                                lb_pair: event.lb_pair,
+                                lb_pair: Hex(event.lb_pair).to_string(),
                                 pid: event.pid.to_string(),
                                 token_x: event.token_x,
                                 token_y: event.token_y,

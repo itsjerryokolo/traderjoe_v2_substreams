@@ -1,9 +1,8 @@
 use crate::abi;
-use crate::utils;
 
 use crate::pb::traderjoe::v2::events as traderjoe_v2;
 
-use abi::lb_factory as traderjoe_v2_pair_events;
+use abi::lb_pair as traderjoe_v2_pair_events;
 use substreams::Hex;
 use substreams_ethereum::{pb::eth, Event};
 
@@ -12,20 +11,26 @@ fn map_template_events(
     blk: eth::v2::Block,
 ) -> Result<traderjoe_v2::TemplateEvents, substreams::errors::Error> {
     Ok(traderjoe_v2::TemplateEvents {
-        fee_recipient_sets: blk
+        swaps: blk
             .receipts()
             .flat_map(|view| {
                 view.receipt.logs.iter().filter_map(|log| {
                     if let Some(event) =
-                        traderjoe_v2_pair_events::events::FeeRecipientSet::match_and_decode(log)
+                        traderjoe_v2_pair_events::events::Swap::match_and_decode(log)
                     {
-                        return Some(traderjoe_v2::FeeRecipientSet {
+                        return Some(traderjoe_v2::Swap {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
                             evt_index: log.block_index,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
-                            new_recipient: event.new_recipient,
-                            old_recipient: event.old_recipient,
+                            swap_for_y: event.swap_for_y,
+                            id: event.id.to_string(),
+                            sender: event.sender,
+                            recipient: event.recipient,
+                            amount_in: event.amount_in.to_u64(),
+                            amount_out: event.amount_out.to_u64(),
+                            fees: event.fees.to_u64(),
+                            volatility_accumulated: event.volatility_accumulated.to_u64(),
                         });
                     }
 
@@ -33,195 +38,186 @@ fn map_template_events(
                 })
             })
             .collect(),
-        flash_loan_fee_sets: blk
+        composition_fees: blk
             .receipts()
             .flat_map(|view| {
                 view.receipt.logs.iter().filter_map(|log| {
                     if let Some(event) =
-                        traderjoe_v2_pair_events::events::FlashLoanFeeSet::match_and_decode(log)
+                        traderjoe_v2_pair_events::events::CompositionFee::match_and_decode(log)
                     {
-                        return Some(traderjoe_v2::FlashLoanFeeSet {
+                        return Some(traderjoe_v2::CompositionFee {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
                             evt_index: log.block_index,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
-                            new_flash_loan_fee: event.new_flash_loan_fee.to_string(),
-                            old_flash_loan_fee: event.old_flash_loan_fee.to_string(),
+                            sender: event.sender,
+                            recipient: event.recipient,
+                            id: event.id.to_u64(),
+                            fees_x: event.fees_x.to_u64(),
+                            fees_y: event.fees_y.to_u64(),
                         });
                     }
-
-                    None
-                })
-            })
-            .collect(),
-        lb_pair_ignored_state_changeds: blk
-            .receipts()
-            .flat_map(|view| {
-                view.receipt.logs.iter().filter_map(|log| {
-                    if let Some(event) =
-                        traderjoe_v2_pair_events::events::LbPairIgnoredStateChanged::match_and_decode(log)
-                    {
-                        return Some(traderjoe_v2::LbPairIgnoredStateChanged {
-                            evt_tx_hash: Hex(&view.transaction.hash).to_string(),
-                            evt_index: log.block_index,
-                            evt_block_time: Some(blk.timestamp().to_owned()),
-                            evt_block_number: blk.number,
-                            ignored: event.ignored,
-                            lb_pair: event.lb_pair,
-                        });
-                    }
-
-                    None
-                })
-            })
-            .collect(),
-        lb_pair_implementation_sets: blk
-            .receipts()
-            .flat_map(|view| {
-                view.receipt.logs.iter().filter_map(|log| {
-                    if let Some(event) =
-                        traderjoe_v2_pair_events::events::LbPairImplementationSet::match_and_decode(log)
-                    {
-                        return Some(traderjoe_v2::LbPairImplementationSet {
-                            evt_tx_hash: Hex(&view.transaction.hash).to_string(),
-                            evt_index: log.block_index,
-                            evt_block_time: Some(blk.timestamp().to_owned()),
-                            evt_block_number: blk.number,
-                            lb_pair_implementation: event.lb_pair_implementation,
-                            old_lb_pair_implementation: event.old_lb_pair_implementation,
-                        });
-                    }
-
                     None
                 })
             })
             .collect(),
 
-        pending_owner_sets: blk
+        deposited_to_bins: blk
             .receipts()
             .flat_map(|view| {
                 view.receipt.logs.iter().filter_map(|log| {
                     if let Some(event) =
-                        traderjoe_v2_pair_events::events::PendingOwnerSet::match_and_decode(log)
+                        traderjoe_v2_pair_events::events::DepositedToBin::match_and_decode(log)
                     {
-                        return Some(traderjoe_v2::PendingOwnerSet {
+                        return Some(traderjoe_v2::DepositedToBin {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
                             evt_index: log.block_index,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
-                            pending_owner: event.pending_owner,
+                            sender: event.sender,
+                            recipient: event.recipient,
+                            id: event.id.to_u64(),
+                            amount_x: event.amount_x.to_u64(),
+                            amount_y: event.amount_y.to_u64(),
                         });
                     }
-
                     None
                 })
             })
             .collect(),
-        preset_open_state_changeds: blk
+
+        fees_collected: blk
             .receipts()
             .flat_map(|view| {
                 view.receipt.logs.iter().filter_map(|log| {
                     if let Some(event) =
-                        traderjoe_v2_pair_events::events::PresetOpenStateChanged::match_and_decode(log)
+                        traderjoe_v2_pair_events::events::FeesCollected::match_and_decode(log)
                     {
-                        return Some(traderjoe_v2::PresetOpenStateChanged {
-                            evt_tx_hash: Hex(&view.transaction.hash).to_string(),
-                            evt_index: log.block_index,
-                            evt_block_time: Some(blk.timestamp().to_owned()),
-                            evt_block_number: blk.number,
-                            bin_step: event.bin_step.to_string(),
-                            is_open: event.is_open,
+                        return Some(traderjoe_v2::FeesCollected {
+                            sender: event.sender,
+                            recipient: event.recipient,
+                            amount_x: event.amount_x.to_u64(),
+                            amount_y: event.amount_y.to_u64(),
                         });
                     }
-
                     None
                 })
             })
             .collect(),
-        preset_removeds: blk
+
+        flash_loans: blk
             .receipts()
             .flat_map(|view| {
                 view.receipt.logs.iter().filter_map(|log| {
                     if let Some(event) =
-                        traderjoe_v2_pair_events::events::PresetRemoved::match_and_decode(log)
+                        traderjoe_v2_pair_events::events::FlashLoan::match_and_decode(log)
                     {
-                        return Some(traderjoe_v2::PresetRemoved {
+                        return Some(traderjoe_v2::FlashLoan {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
                             evt_index: log.block_index,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
-                            bin_step: event.bin_step.to_string(),
+                            sender: event.sender,
+                            receiver: event.receiver,
+                            token: event.token,
+                            amount: event.amount.to_u64(),
+                            fee: event.fee.to_u64(),
                         });
                     }
-
                     None
                 })
             })
             .collect(),
-        preset_sets: blk
-            .receipts()
-            .flat_map(|view| {
-                view.receipt.logs.iter().filter_map(|log| {
-                    if let Some(event) = traderjoe_v2_pair_events::events::PresetSet::match_and_decode(log)
-                    {
-                        return Some(traderjoe_v2::PresetSet {
-                            evt_tx_hash: Hex(&view.transaction.hash).to_string(),
-                            evt_index: log.block_index,
-                            evt_block_time: Some(blk.timestamp().to_owned()),
-                            evt_block_number: blk.number,
-                            base_factor: event.base_factor.to_string(),
-                            bin_step: event.bin_step.to_string(),
-                            decay_period: event.decay_period.to_string(),
-                            filter_period: event.filter_period.to_string(),
-                            max_volatility_accumulator: event
-                                .max_volatility_accumulator
-                                .to_string(),
-                            protocol_share: event.protocol_share.to_string(),
-                            reduction_factor: event.reduction_factor.to_string(),
-                            variable_fee_control: event.variable_fee_control.to_string(),
-                        });
-                    }
-
-                    None
-                })
-            })
-            .collect(),
-        quote_asset_addeds: blk
+        protocol_fees_collected: blk
             .receipts()
             .flat_map(|view| {
                 view.receipt.logs.iter().filter_map(|log| {
                     if let Some(event) =
-                        traderjoe_v2_pair_events::events::QuoteAssetAdded::match_and_decode(log)
+                        traderjoe_v2_pair_events::events::ProtocolFeesCollected::match_and_decode(
+                            log,
+                        )
                     {
-                        return Some(traderjoe_v2::QuoteAssetAdded {
+                        return Some(traderjoe_v2::ProtocolFeesCollected {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
                             evt_index: log.block_index,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
-                            quote_asset: event.quote_asset,
+                            sender: event.sender,
+                            recipient: event.recipient,
+                            amount_x: event.amount_x.to_u64(),
+                            amount_y: event.amount_y.to_u64(),
                         });
                     }
-
                     None
                 })
             })
             .collect(),
-        quote_asset_removeds: blk
+        transfer_batches: blk
             .receipts()
             .flat_map(|view| {
                 view.receipt.logs.iter().filter_map(|log| {
                     if let Some(event) =
-                        traderjoe_v2_pair_events::events::QuoteAssetRemoved::match_and_decode(log)
+                        traderjoe_v2_pair_events::events::TransferBatch::match_and_decode(log)
                     {
-                        return Some(traderjoe_v2::QuoteAssetRemoved {
+                        return Some(traderjoe_v2::TransferBatch {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
                             evt_index: log.block_index,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
-                            quote_asset: event.quote_asset,
+                            sender: event.sender,
+                            from: event.from,
+                            to: event.to,
+                            ids: event.ids.iter().map(|id| id.to_string()).collect(),
+                            amounts: event.amounts.iter().map(|id| id.to_string()).collect(),
                         });
                     }
+                    None
+                })
+            })
+            .collect(),
+        transfer_singles: blk
+            .receipts()
+            .flat_map(|view| {
+                view.receipt.logs.iter().filter_map(|log| {
+                    if let Some(event) =
+                        traderjoe_v2_pair_events::events::TransferSingle::match_and_decode(log)
+                    {
+                        return Some(traderjoe_v2::TransferSingle {
+                            evt_tx_hash: Hex(&view.transaction.hash).to_string(),
+                            evt_index: log.block_index,
+                            evt_block_time: Some(blk.timestamp().to_owned()),
+                            evt_block_number: blk.number,
+                            sender: event.sender,
+                            from: event.from,
+                            to: event.to,
+                            id: event.id.to_u64(),
+                            amount: event.amount.to_u64(),
+                        });
+                    }
+                    None
+                })
+            })
+            .collect(),
 
+        withdrawn_from_bins: blk
+            .receipts()
+            .flat_map(|view| {
+                view.receipt.logs.iter().filter_map(|log| {
+                    if let Some(event) =
+                        traderjoe_v2_pair_events::events::WithdrawnFromBin::match_and_decode(log)
+                    {
+                        return Some(traderjoe_v2::WithdrawnFromBin {
+                            evt_tx_hash: Hex(&view.transaction.hash).to_string(),
+                            evt_index: log.block_index,
+                            evt_block_time: Some(blk.timestamp().to_owned()),
+                            evt_block_number: blk.number,
+                            sender: event.sender,
+                            recipient: event.recipient,
+                            id: event.id.to_u64(),
+                            amount_x: event.amount_x.to_u64(),
+                            amount_y: event.amount_y.to_u64(),
+                        });
+                    }
                     None
                 })
             })
