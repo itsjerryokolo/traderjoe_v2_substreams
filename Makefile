@@ -1,5 +1,9 @@
 CARGO_VERSION := $(shell cargo version 2>/dev/null)
 
+.PHONY: auth
+auth: auth
+	./auth.sh
+
 .PHONY: build
 build:
 ifdef CARGO_VERSION
@@ -13,9 +17,13 @@ endif
 run: build
 	substreams run substreams.yaml map_events $(if $(START_BLOCK),-s $(START_BLOCK)) $(if $(STOP_BLOCK),-t $(STOP_BLOCK))
 
+
+
 .PHONY: gui
 gui: build
-	substreams gui substreams.yaml map_events $(if $(START_BLOCK),-s $(START_BLOCK)) $(if $(STOP_BLOCK),-t $(STOP_BLOCK))
+	substreams gui  substreams.yaml map_factory_events -s 17821282 -t +50000
+
+	# substreams gui substreams.yaml map_factory_events $(if $(START_BLOCK),-s $(START_BLOCK)) $(if $(STOP_BLOCK),-t $(STOP_BLOCK))
 
 .PHONY: codegen
 codegen:

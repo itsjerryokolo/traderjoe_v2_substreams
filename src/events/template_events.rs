@@ -1,6 +1,6 @@
 use crate::abi;
 
-use crate::pb::traderjoe::v2::events as traderjoe_v2;
+use crate::pb::traderjoe::v2 as traderjoe_v2;
 
 use abi::lb_pair as traderjoe_v2_pair_events;
 use substreams::Hex;
@@ -20,7 +20,7 @@ fn map_template_events(
                     {
                         return Some(traderjoe_v2::Swap {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
-                            evt_index: log.block_index,
+                            evt_index: log.ordinal,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
                             swap_for_y: event.swap_for_y,
@@ -47,7 +47,7 @@ fn map_template_events(
                     {
                         return Some(traderjoe_v2::CompositionFee {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
-                            evt_index: log.block_index,
+                            evt_index: log.ordinal,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
                             sender: event.sender,
@@ -71,7 +71,7 @@ fn map_template_events(
                     {
                         return Some(traderjoe_v2::DepositedToBin {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
-                            evt_index: log.block_index,
+                            evt_index: log.ordinal,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
                             sender: event.sender,
@@ -114,7 +114,7 @@ fn map_template_events(
                     {
                         return Some(traderjoe_v2::FlashLoan {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
-                            evt_index: log.block_index,
+                            evt_index: log.ordinal,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
                             sender: event.sender,
@@ -139,7 +139,7 @@ fn map_template_events(
                     {
                         return Some(traderjoe_v2::ProtocolFeesCollected {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
-                            evt_index: log.block_index,
+                            evt_index: log.ordinal,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
                             sender: event.sender,
@@ -161,7 +161,7 @@ fn map_template_events(
                     {
                         return Some(traderjoe_v2::TransferBatch {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
-                            evt_index: log.block_index,
+                            evt_index: log.ordinal,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
                             sender: event.sender,
@@ -184,7 +184,7 @@ fn map_template_events(
                     {
                         return Some(traderjoe_v2::TransferSingle {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
-                            evt_index: log.block_index,
+                            evt_index: log.ordinal,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
                             sender: event.sender,
@@ -208,7 +208,7 @@ fn map_template_events(
                     {
                         return Some(traderjoe_v2::WithdrawnFromBin {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
-                            evt_index: log.block_index,
+                            evt_index: log.ordinal,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
                             sender: event.sender,

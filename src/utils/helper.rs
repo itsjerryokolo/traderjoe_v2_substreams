@@ -75,6 +75,13 @@ pub fn get_sorted_amount1(
 pub fn bigint_to_i32(str: &str) -> i32 {
     BigInt::from_str(str).unwrap().to_i32().unwrap()
 }
+pub fn to_bigint(str: &str) -> BigInt {
+    BigInt::from_str(str).unwrap()
+}
+
+pub fn bigint_to_u64(str: &str) -> u64 {
+    BigInt::from_str(str).unwrap().to_u64().unwrap()
+}
 
 pub fn get_sorted_price(token_x: &str, token_y: &str, value_0: &str, value_1: &str) -> String {
     let value: bool = compare_tokens(token_x, token_y);
