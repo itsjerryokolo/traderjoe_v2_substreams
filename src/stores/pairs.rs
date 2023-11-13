@@ -102,7 +102,7 @@ pub fn store_pairs_tvl(
 pub fn store_token_prices(
     clock: Clock,
     pairs: StoreGetProto<traderjoe_v2::LbPair>,
-    bundle: StoreGetProto<traderjoe_v2::Bundle>,
+    bundles: StoreGetProto<traderjoe_v2::Bundle>,
     events: traderjoe_v2::TemplateEvents,
     store: StoreSetString,
 ) {
@@ -117,13 +117,15 @@ pub fn store_token_prices(
 
     for pair_tvl in events.swaps {
         let pair = pairs.must_get_last(generate_key("Pair", &pair_tvl.id));
+        let bundle = bundles.must_get_last(generate_key("Bundle", "1"));
 
         let pool_address = &pair.id;
+        let avax_price_usd = bundle.avax_price_usd;
 
         let token0_address = &pair.token_x;
         let token1_address = &pair.token_y;
 
-        let amount_x_in = 1;
+        let amount_x_in = avax_price_usd;
         let amount_x_out = 1;
 
         let amount_y_in = 1;
@@ -243,6 +245,81 @@ pub fn store_total_tx_counts(
     }
 
     for event in template_events.composition_fees {
+        output.add_many(
+            event.evt_index,
+            &vec![
+                format!("factory:{factory_addr}"),
+                format!("SJoeDayData:{day_id}"),
+            ],
+            &BigInt::from(1 as i32),
+        );
+    }
+    for event in template_events.deposited_to_bins {
+        output.add_many(
+            event.evt_index,
+            &vec![
+                format!("factory:{factory_addr}"),
+                format!("SJoeDayData:{day_id}"),
+            ],
+            &BigInt::from(1 as i32),
+        );
+    }
+
+    for event in template_events.transfer_batches {
+        output.add_many(
+            event.evt_index,
+            &vec![
+                format!("factory:{factory_addr}"),
+                format!("SJoeDayData:{day_id}"),
+            ],
+            &BigInt::from(1 as i32),
+        );
+    }
+    for event in template_events.flash_loans {
+        output.add_many(
+            event.evt_index,
+            &vec![
+                format!("factory:{factory_addr}"),
+                format!("SJoeDayData:{day_id}"),
+            ],
+            &BigInt::from(1 as i32),
+        );
+    }
+
+    for event in template_events.fees_collected {
+        output.add_many(
+            event.evt_index,
+            &vec![
+                format!("factory:{factory_addr}"),
+                format!("SJoeDayData:{day_id}"),
+            ],
+            &BigInt::from(1 as i32),
+        );
+    }
+
+    for event in template_events.transfer_singles {
+        output.add_many(
+            event.evt_index,
+            &vec![
+                format!("factory:{factory_addr}"),
+                format!("SJoeDayData:{day_id}"),
+            ],
+            &BigInt::from(1 as i32),
+        );
+    }
+
+    for event in template_events.protocol_fees_collected {
+        output.add_many(
+            event.evt_index,
+            &vec![
+                format!("factory:{factory_addr}"),
+                format!("SJoeDayData:{day_id}"),
+            ],
+            &BigInt::from(1 as i32),
+        );
+    }
+
+    for event in template_events.withdrawn_from_bins {
         output.add_many(
             event.evt_index,
             &vec![

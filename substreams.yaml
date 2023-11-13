@@ -26,7 +26,15 @@ modules:
     inputs:
       - source: sf.ethereum.type.v2.Block
     output:
-      type: proto:traderjoe.v2.events.FactoryEvents
+      type: proto:traderjoe.v2.FactoryEvents
+
+  - name: map_template_events
+    kind: map
+    initialBlock: 17821282
+    inputs:
+      - source: sf.ethereum.type.v2.Block
+    output:
+      type: proto:traderjoe.v2.TemplateEvents
 
 
   - name: map_graph_out

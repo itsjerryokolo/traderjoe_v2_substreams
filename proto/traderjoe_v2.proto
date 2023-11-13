@@ -149,6 +149,11 @@ message FeesCollected {
   bytes recipient = 2;
   uint64 amountX = 3;
   uint64 amountY = 4;
+  uint64 evt_index = 11;
+  google.protobuf.Timestamp evt_block_time = 12;
+  uint64 evt_block_number = 13;
+  string evt_tx_hash = 14;
+
   
 }
 

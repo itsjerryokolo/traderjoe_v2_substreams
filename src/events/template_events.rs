@@ -98,6 +98,10 @@ fn map_template_events(
                             recipient: event.recipient,
                             amount_x: event.amount_x.to_u64(),
                             amount_y: event.amount_y.to_u64(),
+                            evt_index: log.ordinal,
+                            evt_block_time: Some(blk.timestamp().to_owned()),
+                            evt_block_number: blk.number,
+                            evt_tx_hash: Hex(&view.transaction.hash).to_string(),
                         });
                     }
                     None

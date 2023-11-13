@@ -203,6 +203,14 @@ pub struct FeesCollected {
     pub amount_x: u64,
     #[prost(uint64, tag="4")]
     pub amount_y: u64,
+    #[prost(uint64, tag="11")]
+    pub evt_index: u64,
+    #[prost(message, optional, tag="12")]
+    pub evt_block_time: ::core::option::Option<::prost_types::Timestamp>,
+    #[prost(uint64, tag="13")]
+    pub evt_block_number: u64,
+    #[prost(string, tag="14")]
+    pub evt_tx_hash: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
