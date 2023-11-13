@@ -386,7 +386,8 @@ message LBPair {
   string fees_usd = 24;
   string liquidity_provider_count = 25;
   google.protobuf.Timestamp timestamp = 26;
-  string block = 27;
+  uint64 block = 27;
+  uint64 log_ordinal = 28;
 }
 
 

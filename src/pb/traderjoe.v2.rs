@@ -108,22 +108,22 @@ pub struct Token {
     pub decimals: u64,
     #[prost(uint64, tag="6")]
     pub total_supply: u64,
-    #[prost(double, optional, tag="7")]
-    pub volume: ::core::option::Option<f64>,
-    #[prost(double, optional, tag="8")]
-    pub volume_usd: ::core::option::Option<f64>,
-    #[prost(double, optional, tag="9")]
-    pub untracked_volume_usd: ::core::option::Option<f64>,
+    #[prost(string, optional, tag="7")]
+    pub volume: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag="8")]
+    pub volume_usd: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag="9")]
+    pub untracked_volume_usd: ::core::option::Option<::prost::alloc::string::String>,
     #[prost(int64, optional, tag="10")]
     pub tx_count: ::core::option::Option<i64>,
-    #[prost(double, optional, tag="11")]
-    pub total_value_locked: ::core::option::Option<f64>,
-    #[prost(double, optional, tag="12")]
-    pub total_value_locked_usd: ::core::option::Option<f64>,
-    #[prost(double, optional, tag="13")]
-    pub derived_avax: ::core::option::Option<f64>,
-    #[prost(double, optional, tag="14")]
-    pub fees_usd: ::core::option::Option<f64>,
+    #[prost(string, optional, tag="11")]
+    pub total_value_locked: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag="12")]
+    pub total_value_locked_usd: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag="13")]
+    pub derived_avax: ::core::option::Option<::prost::alloc::string::String>,
+    #[prost(string, optional, tag="14")]
+    pub fees_usd: ::core::option::Option<::prost::alloc::string::String>,
 }
 /// Template Events
 #[allow(clippy::derive_partial_eq_without_eq)]
@@ -346,8 +346,8 @@ pub struct WithdrawnFromBin {
 pub struct Bundle {
     #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
-    #[prost(double, tag="2")]
-    pub avax_price_usd: f64,
+    #[prost(string, tag="2")]
+    pub avax_price_usd: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -356,16 +356,16 @@ pub struct LbFactory {
     pub id: ::prost::alloc::string::String,
     #[prost(int64, tag="2")]
     pub pair_count: i64,
-    #[prost(double, tag="3")]
-    pub volume_usd: f64,
-    #[prost(double, tag="4")]
-    pub volume_avax: f64,
-    #[prost(double, tag="5")]
-    pub untracked_volume_usd: f64,
-    #[prost(double, tag="6")]
-    pub total_value_locked_usd: f64,
-    #[prost(double, tag="7")]
-    pub total_value_locked_avax: f64,
+    #[prost(string, tag="3")]
+    pub volume_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="4")]
+    pub volume_avax: ::prost::alloc::string::String,
+    #[prost(string, tag="5")]
+    pub untracked_volume_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub total_value_locked_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="7")]
+    pub total_value_locked_avax: ::prost::alloc::string::String,
     #[prost(int64, tag="8")]
     pub tx_count: i64,
     #[prost(int64, tag="9")]
@@ -376,10 +376,10 @@ pub struct LbFactory {
     pub flashloan_fee: i64,
     #[prost(message, repeated, tag="12")]
     pub ignored_lb_pairs: ::prost::alloc::vec::Vec<LbPair>,
-    #[prost(double, tag="13")]
-    pub fees_usd: f64,
-    #[prost(double, tag="14")]
-    pub fees_avax: f64,
+    #[prost(string, tag="13")]
+    pub fees_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="14")]
+    pub fees_avax: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -390,26 +390,20 @@ pub struct TraderJoeHourData {
     pub date: i32,
     #[prost(message, optional, tag="3")]
     pub factory: ::core::option::Option<LbFactory>,
-    #[prost(double, tag="4")]
-    pub volume_avax: f64,
-    #[prost(double, tag="5")]
-    pub volume_usd: f64,
-    #[prost(double, tag="6")]
-    pub untracked_volume_usd: f64,
-    #[prost(double, tag="7")]
-    pub total_value_locked_avax: f64,
-    #[prost(double, tag="8")]
-    pub total_value_locked_usd: f64,
-    #[prost(double, tag="9")]
-    pub fees_usd: f64,
+    #[prost(string, tag="4")]
+    pub volume_avax: ::prost::alloc::string::String,
+    #[prost(string, tag="5")]
+    pub volume_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub untracked_volume_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="7")]
+    pub total_value_locked_avax: ::prost::alloc::string::String,
+    #[prost(string, tag="8")]
+    pub total_value_locked_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="9")]
+    pub fees_usd: ::prost::alloc::string::String,
     #[prost(int64, tag="10")]
     pub tx_count: i64,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TraderJoeHourDatas {
-    #[prost(message, repeated, tag="1")]
-    pub trader_joe_hour_datas: ::prost::alloc::vec::Vec<TraderJoeHourData>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -420,18 +414,18 @@ pub struct TraderJoeDayData {
     pub date: i32,
     #[prost(message, optional, tag="3")]
     pub factory: ::core::option::Option<LbFactory>,
-    #[prost(double, tag="4")]
-    pub volume_avax: f64,
-    #[prost(double, tag="5")]
-    pub volume_usd: f64,
-    #[prost(double, tag="6")]
-    pub untracked_volume_usd: f64,
-    #[prost(double, tag="7")]
-    pub total_value_locked_avax: f64,
-    #[prost(double, tag="8")]
-    pub total_value_locked_usd: f64,
-    #[prost(double, tag="9")]
-    pub fees_usd: f64,
+    #[prost(string, tag="4")]
+    pub volume_avax: ::prost::alloc::string::String,
+    #[prost(string, tag="5")]
+    pub volume_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub untracked_volume_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="7")]
+    pub total_value_locked_avax: ::prost::alloc::string::String,
+    #[prost(string, tag="8")]
+    pub total_value_locked_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="9")]
+    pub fees_usd: ::prost::alloc::string::String,
     #[prost(int64, tag="10")]
     pub tx_count: i64,
 }
@@ -444,32 +438,32 @@ pub struct TokenHourData {
     pub date: i32,
     #[prost(message, optional, tag="3")]
     pub token: ::core::option::Option<Token>,
-    #[prost(double, tag="4")]
-    pub volume: f64,
-    #[prost(double, tag="5")]
-    pub volume_avax: f64,
-    #[prost(double, tag="6")]
-    pub volume_usd: f64,
+    #[prost(string, tag="4")]
+    pub volume: ::prost::alloc::string::String,
+    #[prost(string, tag="5")]
+    pub volume_avax: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub volume_usd: ::prost::alloc::string::String,
     #[prost(int64, tag="7")]
     pub tx_count: i64,
-    #[prost(double, tag="8")]
-    pub total_value_locked: f64,
-    #[prost(double, tag="9")]
-    pub total_value_locked_avax: f64,
-    #[prost(double, tag="10")]
-    pub total_value_locked_usd: f64,
-    #[prost(double, tag="11")]
-    pub price_usd: f64,
-    #[prost(double, tag="12")]
-    pub fees_usd: f64,
-    #[prost(double, tag="13")]
-    pub open: f64,
-    #[prost(double, tag="14")]
-    pub high: f64,
-    #[prost(double, tag="15")]
-    pub low: f64,
-    #[prost(double, tag="16")]
-    pub close: f64,
+    #[prost(string, tag="8")]
+    pub total_value_locked: ::prost::alloc::string::String,
+    #[prost(string, tag="9")]
+    pub total_value_locked_avax: ::prost::alloc::string::String,
+    #[prost(string, tag="10")]
+    pub total_value_locked_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="11")]
+    pub price_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="12")]
+    pub fees_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="13")]
+    pub open: ::prost::alloc::string::String,
+    #[prost(string, tag="14")]
+    pub high: ::prost::alloc::string::String,
+    #[prost(string, tag="15")]
+    pub low: ::prost::alloc::string::String,
+    #[prost(string, tag="16")]
+    pub close: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -480,38 +474,32 @@ pub struct TokenDayData {
     pub date: i32,
     #[prost(message, optional, tag="3")]
     pub token: ::core::option::Option<Token>,
-    #[prost(double, tag="4")]
-    pub volume: f64,
-    #[prost(double, tag="5")]
-    pub volume_avax: f64,
-    #[prost(double, tag="6")]
-    pub volume_usd: f64,
+    #[prost(string, tag="4")]
+    pub volume: ::prost::alloc::string::String,
+    #[prost(string, tag="5")]
+    pub volume_avax: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub volume_usd: ::prost::alloc::string::String,
     #[prost(int64, tag="7")]
     pub tx_count: i64,
-    #[prost(double, tag="8")]
-    pub total_value_locked: f64,
-    #[prost(double, tag="9")]
-    pub total_value_locked_avax: f64,
-    #[prost(double, tag="10")]
-    pub total_value_locked_usd: f64,
-    #[prost(double, tag="11")]
-    pub price_usd: f64,
-    #[prost(double, tag="12")]
-    pub fees_usd: f64,
-    #[prost(double, tag="13")]
-    pub open: f64,
-    #[prost(double, tag="14")]
-    pub high: f64,
-    #[prost(double, tag="15")]
-    pub low: f64,
-    #[prost(double, tag="16")]
-    pub close: f64,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct TokenDayDatas {
-    #[prost(message, repeated, tag="1")]
-    pub token_day_datas: ::prost::alloc::vec::Vec<TokenDayData>,
+    #[prost(string, tag="8")]
+    pub total_value_locked: ::prost::alloc::string::String,
+    #[prost(string, tag="9")]
+    pub total_value_locked_avax: ::prost::alloc::string::String,
+    #[prost(string, tag="10")]
+    pub total_value_locked_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="11")]
+    pub price_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="12")]
+    pub fees_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="13")]
+    pub open: ::prost::alloc::string::String,
+    #[prost(string, tag="14")]
+    pub high: ::prost::alloc::string::String,
+    #[prost(string, tag="15")]
+    pub low: ::prost::alloc::string::String,
+    #[prost(string, tag="16")]
+    pub close: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -520,20 +508,14 @@ pub struct SJoeDayData {
     pub id: ::prost::alloc::string::String,
     #[prost(int32, tag="2")]
     pub date: i32,
-    #[prost(double, tag="3")]
-    pub amount_x: f64,
-    #[prost(double, tag="4")]
-    pub amount_y: f64,
-    #[prost(double, tag="5")]
-    pub collected_avax: f64,
-    #[prost(double, tag="6")]
-    pub collected_usd: f64,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct SJoeDayDatas {
-    #[prost(message, repeated, tag="1")]
-    pub sjoe_day_datas: ::prost::alloc::vec::Vec<SJoeDayData>,
+    #[prost(string, tag="3")]
+    pub amount_x: ::prost::alloc::string::String,
+    #[prost(string, tag="4")]
+    pub amount_y: ::prost::alloc::string::String,
+    #[prost(string, tag="5")]
+    pub collected_avax: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub collected_usd: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -544,8 +526,8 @@ pub struct LbPair {
     pub factory: ::core::option::Option<LbFactory>,
     #[prost(string, tag="3")]
     pub name: ::prost::alloc::string::String,
-    #[prost(double, tag="4")]
-    pub base_fee_pct: f64,
+    #[prost(string, tag="4")]
+    pub base_fee_pct: ::prost::alloc::string::String,
     #[prost(string, tag="5")]
     pub token_x: ::prost::alloc::string::String,
     #[prost(string, tag="6")]
@@ -590,14 +572,10 @@ pub struct LbPair {
     pub liquidity_provider_count: ::prost::alloc::string::String,
     #[prost(message, optional, tag="26")]
     pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
-    #[prost(string, tag="27")]
-    pub block: ::prost::alloc::string::String,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LbPairs {
-    #[prost(message, repeated, tag="1")]
-    pub lb_pairs: ::prost::alloc::vec::Vec<LbPair>,
+    #[prost(uint64, tag="27")]
+    pub block: u64,
+    #[prost(uint64, tag="28")]
+    pub log_ordinal: u64,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -622,16 +600,10 @@ pub struct LbPairParameterSet {
     pub variable_fee_control: i64,
     #[prost(int64, tag="10")]
     pub protocol_share: i64,
-    #[prost(double, tag="11")]
-    pub protocol_share_pct: f64,
+    #[prost(string, tag="11")]
+    pub protocol_share_pct: ::prost::alloc::string::String,
     #[prost(int64, tag="12")]
     pub max_volatility_accumulated: i64,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LbPairParameterSets {
-    #[prost(message, repeated, tag="1")]
-    pub lb_pair_parameter_sets: ::prost::alloc::vec::Vec<LbPairParameterSet>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -640,16 +612,16 @@ pub struct Bin {
     pub id: ::prost::alloc::string::String,
     #[prost(message, optional, tag="2")]
     pub lb_pair: ::core::option::Option<LbPair>,
-    #[prost(double, tag="3")]
-    pub price_x: f64,
-    #[prost(double, tag="4")]
-    pub price_y: f64,
+    #[prost(string, tag="3")]
+    pub price_x: ::prost::alloc::string::String,
+    #[prost(string, tag="4")]
+    pub price_y: ::prost::alloc::string::String,
     #[prost(int64, tag="5")]
     pub total_supply: i64,
-    #[prost(double, tag="6")]
-    pub reserve_x: f64,
-    #[prost(double, tag="7")]
-    pub reserve_y: f64,
+    #[prost(string, tag="6")]
+    pub reserve_x: ::prost::alloc::string::String,
+    #[prost(string, tag="7")]
+    pub reserve_y: ::prost::alloc::string::String,
     #[prost(int64, tag="8")]
     pub bin_id: i64,
     #[prost(string, repeated, tag="9")]
@@ -676,24 +648,24 @@ pub struct LbPairDayData {
     pub token_x: ::prost::alloc::string::String,
     #[prost(string, tag="5")]
     pub token_y: ::prost::alloc::string::String,
-    #[prost(double, tag="6")]
-    pub reserve_x: f64,
-    #[prost(double, tag="7")]
-    pub reserve_y: f64,
-    #[prost(double, tag="8")]
-    pub total_value_locked_usd: f64,
-    #[prost(double, tag="9")]
-    pub volume_token_x: f64,
-    #[prost(double, tag="10")]
-    pub volume_token_y: f64,
-    #[prost(double, tag="11")]
-    pub volume_usd: f64,
-    #[prost(double, tag="12")]
-    pub untracked_volume_usd: f64,
+    #[prost(string, tag="6")]
+    pub reserve_x: ::prost::alloc::string::String,
+    #[prost(string, tag="7")]
+    pub reserve_y: ::prost::alloc::string::String,
+    #[prost(string, tag="8")]
+    pub total_value_locked_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="9")]
+    pub volume_token_x: ::prost::alloc::string::String,
+    #[prost(string, tag="10")]
+    pub volume_token_y: ::prost::alloc::string::String,
+    #[prost(string, tag="11")]
+    pub volume_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="12")]
+    pub untracked_volume_usd: ::prost::alloc::string::String,
     #[prost(int64, tag="13")]
     pub tx_count: i64,
-    #[prost(double, tag="14")]
-    pub fees_usd: f64,
+    #[prost(string, tag="14")]
+    pub fees_usd: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -714,24 +686,24 @@ pub struct LbPairHourData {
     pub token_x: ::prost::alloc::string::String,
     #[prost(string, tag="5")]
     pub token_y: ::prost::alloc::string::String,
-    #[prost(double, tag="6")]
-    pub reserve_x: f64,
-    #[prost(double, tag="7")]
-    pub reserve_y: f64,
-    #[prost(double, tag="8")]
-    pub total_value_locked_usd: f64,
-    #[prost(double, tag="9")]
-    pub volume_token_x: f64,
-    #[prost(double, tag="10")]
-    pub volume_token_y: f64,
-    #[prost(double, tag="11")]
-    pub volume_usd: f64,
-    #[prost(double, tag="12")]
-    pub untracked_volume_usd: f64,
+    #[prost(string, tag="6")]
+    pub reserve_x: ::prost::alloc::string::String,
+    #[prost(string, tag="7")]
+    pub reserve_y: ::prost::alloc::string::String,
+    #[prost(string, tag="8")]
+    pub total_value_locked_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="9")]
+    pub volume_token_x: ::prost::alloc::string::String,
+    #[prost(string, tag="10")]
+    pub volume_token_y: ::prost::alloc::string::String,
+    #[prost(string, tag="11")]
+    pub volume_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="12")]
+    pub untracked_volume_usd: ::prost::alloc::string::String,
     #[prost(int64, tag="13")]
     pub tx_count: i64,
-    #[prost(double, tag="14")]
-    pub fees_usd: f64,
+    #[prost(string, tag="14")]
+    pub fees_usd: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -798,16 +770,16 @@ pub struct UserFeesData {
     pub string: ::prost::alloc::string::String,
     #[prost(message, optional, tag="3")]
     pub lb_pair: ::core::option::Option<LbPair>,
-    #[prost(double, tag="4")]
-    pub accrued_fees_x: f64,
-    #[prost(double, tag="5")]
-    pub accrued_fees_y: f64,
-    #[prost(double, tag="6")]
-    pub accrued_fees_l: f64,
-    #[prost(double, tag="7")]
-    pub collected_fees_x: f64,
-    #[prost(double, tag="8")]
-    pub collected_fees_y: f64,
+    #[prost(string, tag="4")]
+    pub accrued_fees_x: ::prost::alloc::string::String,
+    #[prost(string, tag="5")]
+    pub accrued_fees_y: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub accrued_fees_l: ::prost::alloc::string::String,
+    #[prost(string, tag="7")]
+    pub collected_fees_x: ::prost::alloc::string::String,
+    #[prost(string, tag="8")]
+    pub collected_fees_y: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -826,16 +798,16 @@ pub struct UserFeesHourData {
     pub string: ::prost::alloc::string::String,
     #[prost(message, optional, tag="4")]
     pub lb_pair: ::core::option::Option<LbPair>,
-    #[prost(double, tag="5")]
-    pub accrued_fees_x: f64,
-    #[prost(double, tag="6")]
-    pub accrued_fees_y: f64,
-    #[prost(double, tag="7")]
-    pub accrued_fees_l: f64,
-    #[prost(double, tag="8")]
-    pub collected_fees_x: f64,
-    #[prost(double, tag="9")]
-    pub collected_fees_y: f64,
+    #[prost(string, tag="5")]
+    pub accrued_fees_x: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub accrued_fees_y: ::prost::alloc::string::String,
+    #[prost(string, tag="7")]
+    pub accrued_fees_l: ::prost::alloc::string::String,
+    #[prost(string, tag="8")]
+    pub collected_fees_x: ::prost::alloc::string::String,
+    #[prost(string, tag="9")]
+    pub collected_fees_y: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -884,14 +856,14 @@ pub struct Flash {
     pub recipient: ::prost::alloc::vec::Vec<u8>,
     #[prost(message, optional, tag="8")]
     pub token: ::core::option::Option<Token>,
-    #[prost(double, tag="9")]
-    pub amount: f64,
-    #[prost(double, tag="10")]
-    pub amount_usd: f64,
-    #[prost(double, tag="11")]
-    pub fees: f64,
-    #[prost(double, tag="12")]
-    pub fees_usd: f64,
+    #[prost(string, tag="9")]
+    pub amount: ::prost::alloc::string::String,
+    #[prost(string, tag="10")]
+    pub amount_usd: ::prost::alloc::string::String,
+    #[prost(string, tag="11")]
+    pub fees: ::prost::alloc::string::String,
+    #[prost(string, tag="12")]
+    pub fees_usd: ::prost::alloc::string::String,
     #[prost(int64, tag="13")]
     pub log_index: i64,
 }
@@ -912,18 +884,18 @@ pub struct Collect {
     pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
     #[prost(message, optional, tag="4")]
     pub lb_pair: ::core::option::Option<LbPair>,
-    #[prost(double, tag="5")]
-    pub amount_x: f64,
-    #[prost(double, tag="6")]
-    pub amount_y: f64,
+    #[prost(string, tag="5")]
+    pub amount_x: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub amount_y: ::prost::alloc::string::String,
     #[prost(string, tag="7")]
     pub recipient: ::prost::alloc::string::String,
     #[prost(bytes="vec", tag="8")]
     pub origin: ::prost::alloc::vec::Vec<u8>,
-    #[prost(double, tag="9")]
-    pub collected_avax: f64,
-    #[prost(double, tag="10")]
-    pub collected_usd: f64,
+    #[prost(string, tag="9")]
+    pub collected_avax: ::prost::alloc::string::String,
+    #[prost(string, tag="10")]
+    pub collected_usd: ::prost::alloc::string::String,
     #[prost(int64, tag="11")]
     pub log_index: i64,
 }
