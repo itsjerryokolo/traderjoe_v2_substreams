@@ -20,6 +20,12 @@ binaries:
     file: ./target/wasm32-unknown-unknown/release/substreams.wasm
 
 modules:
+
+##############################################
+#                 EVENTS                     #
+##############################################
+
+
   - name: map_factory_events
     kind: map
     initialBlock: 17821282
@@ -36,6 +42,53 @@ modules:
     output:
       type: proto:traderjoe.v2.TemplateEvents
 
+
+
+
+##############################################
+#                 STORES                     #
+##############################################
+  
+    #Pairs
+  - name: store_pairs_tvl
+    kind: store
+    initialBlock: 17821282
+    updatePolicy: add
+    valueType: bigint
+    inputs:
+      - store: store_pairs
+      - map: map_swaps
+
+  - name: store_pair_count
+    kind: store
+    initialBlock: 17821282
+    updatePolicy: add
+    valueType: bigint
+    inputs:
+      - map: map_factory_events
+
+    #Tokens
+  - name: store_tokens
+    kind: store
+    initialBlock: 17821282
+    updatePolicy: set
+    valueType: proto:traderjoe.v2.LbFactory
+    inputs:
+      - map: map_factory_events
+
+  - name: store_token_prices
+    kind: store
+    initialBlock: 3914494
+    updatePolicy: set
+    valueType: string
+    inputs:
+      - map: map_template_events
+      - store: bids_state
+      - store: store_pairs
+
+##############################################
+#                 GRAPH OUT                  #
+##############################################
 
   - name: map_graph_out
     kind: map
