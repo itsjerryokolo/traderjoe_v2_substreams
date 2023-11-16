@@ -4,13 +4,13 @@ mod pb;
 mod stores;
 mod utils;
 
-use std::str::FromStr;
-
 use substreams_entity_change::{pb::entity::EntityChanges, tables::Tables};
 
+use crate::pb::traderjoe::v2 as traderjoe_v2;
 use substreams::{
-    pb::substreams::store_delta::Operation,
+    pb::substreams::{module::input::Store, store_delta::Operation},
     scalar::{BigDecimal, BigInt},
+    store::{Delta, DeltaBigInt, DeltaProto, Deltas, StoreGetProto},
 };
 
 pub use events::*;
@@ -18,7 +18,10 @@ pub use stores::*;
 use substreams::errors::Error;
 
 #[substreams::handlers::map]
-pub fn graph_out() -> Result<EntityChanges, Error> {
+pub fn graph_out(
+    pairs: Deltas<DeltaProto<traderjoe_v2::LbPair>>,
+    pair_count: Deltas<DeltaBigInt>,
+) -> Result<EntityChanges, Error> {
     let mut tables = Tables::new();
 
     // // Tokens:

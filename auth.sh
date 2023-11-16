@@ -9,6 +9,7 @@ token=$(echo $response | jq -r .token)
 # Print the token
 echo "Token: $token"
 
-# Export the token as an environment variable
-export SUBSTREAMS_API_TOKEN=$token
+# Create a new script that exports the token as an environment variable
+echo "export SUBSTREAMS_API_TOKEN=$token" > setenv.sh
+
 echo "Token has been set."

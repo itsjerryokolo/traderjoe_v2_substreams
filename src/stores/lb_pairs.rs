@@ -1,10 +1,15 @@
 use crate::utils::constants::DEXCANDLES_FACTORY;
-use crate::utils::helper::generate_key;
+use crate::utils::helper::{append_0x, bigint_to_u64, generate_key};
+use crate::utils::rpc::get_token_data;
 
+use ethabi::token;
+use std::str::FromStr;
 use substreams::pb::substreams::Clock;
+use substreams::scalar::BigDecimal;
 use substreams::store::{
     StoreAdd, StoreAddBigInt, StoreDelete, StoreGetProto, StoreSetProto, StoreSetString,
 };
+
 use substreams::{
     pb::substreams::{store_delta::Operation, StoreDelta},
     scalar::BigInt,
@@ -13,6 +18,14 @@ use substreams::{
 };
 
 use crate::pb::traderjoe::v2 as traderjoe_v2;
+
+// pub const BIG_DECIMAL_1E6: BigDecimal = BigDecimal::from_str("1_000_000").unwrap();
+// pub static BIG_DECIMAL_1E10: BigDecimal = BigDecimal::from_str("10_000_000_000").unwrap();
+// pub static BIG_DECIMAL_1E12: BigDecimal = BigDecimal::from_str("1_000_000_000_000").unwrap();
+// pub static BIG_DECIMAL_1E18: BigDecimal =
+//     BigDecimal::from_str("1_000_000_000_000_000_000").unwrap();
+// pub static BIG_DECIMAL_ZERO: BigDecimal = BigDecimal::from_str("0").unwrap();
+// pub static BIG_DECIMAL_ONE: BigDecimal = BigDecimal::from_str("1").unwrap();
 
 #[substreams::handlers::store]
 pub fn store_total_tx_counts(
@@ -36,8 +49,8 @@ pub fn store_total_tx_counts(
 
     for event in factory_events.lb_pair_createds {
         let pool_address = &event.lb_pair;
-        let token0_addr = &event.token_x.unwrap().address;
-        let token1_addr = &event.token_y.unwrap().address;
+        let token0_addr = Hex(&event.token_x).to_string();
+        let token1_addr = Hex(&event.token_y).to_string();
 
         output.add_many(
             event.evt_index,
@@ -203,14 +216,63 @@ pub fn store_total_tx_counts(
 }
 
 #[substreams::handlers::store]
+pub fn store_token(
+    i: StoreGetProto<traderjoe_v2::LbPair>,
+    i2: traderjoe_v2::FactoryEvents,
+    o: StoreSetProto<traderjoe_v2::Token>,
+) {
+    for pair_created in i2.lb_pair_createds {
+        let pair_address = pair_created.lb_pair;
+
+        let pair = i.get_at(1, generate_key("Pair", &pair_address));
+
+        if let Some(pair) = pair {
+            let token_x_data = get_token_data(&pair_created.token_x);
+            let token_y_data = get_token_data(&pair_created.token_y);
+
+            let token_x = traderjoe_v2::Token {
+                address: append_0x(&Hex(pair_created.token_x).to_string()),
+                decimals: bigint_to_u64(&token_x_data.2),
+                symbol: token_x_data.1,
+                factory_address: append_0x(&Hex(DEXCANDLES_FACTORY).to_string()),
+                name: token_x_data.0,
+                total_supply: bigint_to_u64(&token_x_data.2),
+                ..Default::default()
+            };
+
+            let token_y = traderjoe_v2::Token {
+                address: append_0x(&Hex(pair_created.token_y).to_string()),
+                decimals: bigint_to_u64(&token_y_data.2),
+                symbol: token_y_data.1,
+                factory_address: append_0x(&Hex(DEXCANDLES_FACTORY).to_string()),
+                name: token_y_data.0,
+                total_supply: bigint_to_u64(&token_x_data.2),
+                ..Default::default()
+            };
+
+            o.set(
+                0,
+                generate_key("Pair", &token_y.address.to_string()),
+                &token_x,
+            );
+            o.set(
+                0,
+                generate_key("Pair", &token_y.address.to_string()),
+                &token_y,
+            );
+        }
+    }
+}
+
+#[substreams::handlers::store]
 pub fn store_pairs(i: traderjoe_v2::FactoryEvents, o: StoreSetProto<traderjoe_v2::LbPair>) {
     for pair_created in i.lb_pair_createds {
         let name = "";
 
         let pair = traderjoe_v2::LbPair {
             bin_step: pair_created.bin_step.to_string(),
-            token_x: pair_created.token_x.unwrap().address,
-            token_y: pair_created.token_y.unwrap().address,
+            token_x: pair_created.token_x,
+            token_y: pair_created.token_y,
             timestamp: pair_created.evt_block_time,
             name: name.to_string(),
             block: pair_created.evt_block_number,
@@ -259,8 +321,8 @@ pub fn store_pairs_tvl(
 
         let pool_address = &pair.id;
 
-        let token0_address = &pair.token_x;
-        let token1_address = &pair.token_y;
+        let token0_address = Hex(&pair.token_x).to_string();
+        let token1_address = Hex(&pair.token_y).to_string();
 
         let amount_x_in = 1;
         let amount_x_out = 1;
@@ -313,8 +375,8 @@ pub fn store_token_prices(
         let pool_address = &pair.id;
         let avax_price_usd = bundle.avax_price_usd;
 
-        let token0_address = &pair.token_x;
-        let token1_address = &pair.token_y;
+        let token0_address = Hex(&pair.token_x).to_string();
+        let token1_address = Hex(&pair.token_y).to_string();
 
         let amount_x_in = avax_price_usd;
         let amount_x_out = 1;
@@ -322,10 +384,10 @@ pub fn store_token_prices(
         let amount_y_in = 1;
         let amount_y_out = 1;
 
-        let reserve_x = amount_x_in - amount_x_out;
+        let reserve_x = 3 - 1;
         let reserve_y = amount_y_in - amount_y_out;
 
-        let price = amount_x_in - amount_x_out;
+        let price = 4 - 3;
 
         store.set_many(
             pair.log_ordinal,
@@ -380,7 +442,7 @@ pub fn store_ticks(
                 format!("TokenDayData:{day_id}:{pool_address}"),
                 format!("TokenHourData:{hour_id}:{pool_address}"),
             ],
-            &price.to_string(),
+            &low.to_string(),
         )
     }
 }

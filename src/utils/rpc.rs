@@ -23,7 +23,7 @@ pub fn get_token_data(token_address: &Vec<u8>) -> (String, String, String) {
     };
     let decimals = match RpcBatch::decode::<_, abi::erc20::functions::Decimals>(&responses[2]) {
         Some(contract_decimals) => contract_decimals.to_string(),
-        None => "Decimal Call Reverted".to_string(),
+        None => "0".to_string(),
     };
 
     let tup: (String, String, String) = (name, symbol, decimals);

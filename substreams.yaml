@@ -38,7 +38,7 @@ modules:
     kind: map
     initialBlock: 17821282
     inputs:
-      - source: sf.ethereum.type.v2.Block
+      - source: proto:traderjoe.v2.FactoryEvents
     output:
       type: proto:traderjoe.v2.TemplateEvents
 
@@ -50,14 +50,14 @@ modules:
 ##############################################
   
     #Pairs
-  - name: store_pairs_tvl
+
+  - name: store_pairs
     kind: store
     initialBlock: 17821282
-    updatePolicy: add
-    valueType: bigint
+    updatePolicy: set
+    valueType: proto:traderjoe.v2.Pairs
     inputs:
-      - store: store_pairs
-      - map: map_swaps
+      - map: map_factory_events
 
   - name: store_pair_count
     kind: store
@@ -76,25 +76,18 @@ modules:
     inputs:
       - map: map_factory_events
 
-  - name: store_token_prices
-    kind: store
-    initialBlock: 3914494
-    updatePolicy: set
-    valueType: string
-    inputs:
-      - map: map_template_events
-      - store: bids_state
-      - store: store_pairs
-
 ##############################################
 #                 GRAPH OUT                  #
 ##############################################
 
-  - name: map_graph_out
+  - name: graph_out
     kind: map
     initialBlock: 17821282
     inputs:
-      - map: map_factory_events
+      - store: store_pairs
+        mode: deltas
+      - store: store_pair_count
+        mode: deltas
     output:
       type: proto:substreams.entity.v1.EntityChanges
 

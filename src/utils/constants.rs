@@ -1,4 +1,5 @@
 use hex_literal::hex;
+use std::str::FromStr;
 use substreams::scalar::{BigDecimal, BigInt};
 
 // Contracts
@@ -13,10 +14,3 @@ pub const CANDLESTICK_PERIODS: [i32; 6] = [
     24 * 60 * 60,     // 1d
     7 * 24 * 60 * 60, // 1w
 ];
-
-pub const BIG_DECIMAL_1E6: BigDecimal = BigDecimal::from(1_000_000);
-pub const BIG_DECIMAL_1E10: BigDecimal = BigDecimal::from(10_000_000_000);
-pub const BIG_DECIMAL_1E12: BigDecimal = BigDecimal::from(1_000_000_000_000);
-pub const BIG_DECIMAL_1E18: BigDecimal = BigDecimal::from(1_000_000_000_000_000_000);
-pub const BIG_DECIMAL_ZERO: BigDecimal = BigDecimal::from(0);
-pub const BIG_DECIMAL_ONE: BigDecimal = BigDecimal::from(1);

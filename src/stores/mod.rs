@@ -1,5 +1,2 @@
-mod bin;
-mod flashloans;
-mod lbfactory;
-mod pairs;
-mod transfer;
+mod lb_factory;
+mod lb_pairs;

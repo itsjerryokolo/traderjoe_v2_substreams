@@ -2,7 +2,12 @@ CARGO_VERSION := $(shell cargo version 2>/dev/null)
 
 .PHONY: auth
 auth: auth
+	 source setenv.sh
+
+.PHONY: source
+source: source
 	./auth.sh
+
 
 .PHONY: build
 build:
@@ -28,6 +33,12 @@ gui: build
 .PHONY: codegen
 codegen:
 	substreams protogen ./substreams.yaml --exclude-paths="sf/substreams,google"
+
+PHONY:go
+go: 
+	substreams gui -e mainnet.eth.streamingfast.io:443 substreams.yaml graph_out -s 17821282 -t +1000000 --debug-modules-output=store_pair_count
+
+
 
 .PHONY: pack
 pack: build

@@ -39,17 +39,7 @@ message FlashLoanFeeSet {
   string new_flash_loan_fee = 6;
 }
 
-message LbPairCreated {
-  string evt_tx_hash = 1;
-  uint64 evt_index = 2;
-  google.protobuf.Timestamp evt_block_time = 3;
-  uint64 evt_block_number = 4;
-  Token token_x = 5;
-  Token token_y = 6;
-  string bin_step = 7;
-  string lb_pair = 8;
-  string pid = 9;
-}
+
 
 message LbPairIgnoredStateChanged {
   string evt_tx_hash = 1;
@@ -67,17 +57,27 @@ message Token {
   string name = 4;
   uint64 decimals = 5;
   uint64 total_supply = 6;
-  optional string volume = 7;
-  optional string volume_usd = 8;
-  optional string untracked_volume_usd = 9;
-  optional int64 tx_count = 10;
-  optional string total_value_locked = 11;
-  optional string total_value_locked_usd = 12;
-  optional string derived_avax = 13;
-  optional string fees_usd = 14;
+ string volume = 7;
+ string volume_usd = 8;
+ string untracked_volume_usd = 9;
+ int64 tx_count = 10;
+ string total_value_locked = 11;
+ string total_value_locked_usd = 12;
+ string derived_avax = 13;
+ string fees_usd = 14;
 }
 
-
+message LbPairCreated {
+  string evt_tx_hash = 1;
+  uint64 evt_index = 2;
+  google.protobuf.Timestamp evt_block_time = 3;
+  uint64 evt_block_number = 4;
+  bytes token_x = 5;
+  bytes token_y = 6;
+  string bin_step = 7;
+  string lb_pair = 8;
+  string pid = 9;
+}
 
 //##################################//
 //          TEMPLATES              //
@@ -214,29 +214,9 @@ message WithdrawnFromBin {
 
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-//// Entities
+//##################################//
+//          ENTITIES               //
+//################################//
 message Bundle {
   string id = 1;
   string avax_price_usd = 2;
@@ -346,8 +326,8 @@ message LBPair {
   LBFactory factory = 2;
   string name = 3;
   string base_fee_pct = 4;
-  string token_x = 5;
-  string token_y = 6;
+  bytes token_x = 5;
+  bytes token_y = 6;
   string bin_step = 7;
   string active_id = 8;
   string reserve_x = 9;

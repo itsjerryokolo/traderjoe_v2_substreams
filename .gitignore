@@ -8,3 +8,5 @@ replay.log
 build
 info.txt
 subgraph/
+auth.sh
+setenv.sh
