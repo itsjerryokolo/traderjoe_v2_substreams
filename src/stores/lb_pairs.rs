@@ -47,10 +47,10 @@ pub fn store_total_tx_counts(
     output.delete_prefix(0, &format!("TokenDayData:{prev_day_id}:"));
     output.delete_prefix(0, &format!("TokenHourData:{prev_hour_id}:"));
 
-    for event in factory_events.lb_pair_createds {
+    for event in factory_events.lb_pairs {
         let pool_address = &event.lb_pair;
-        let token0_addr = Hex(&event.token_x).to_string();
-        let token1_addr = Hex(&event.token_y).to_string();
+        let token0_addr = event.token_x.unwrap().address.to_string();
+        let token1_addr = event.token_y.unwrap().address.to_string();
 
         output.add_many(
             event.evt_index,
@@ -216,81 +216,38 @@ pub fn store_total_tx_counts(
 }
 
 #[substreams::handlers::store]
-pub fn store_token(
+pub fn store_tokens(
     i: StoreGetProto<traderjoe_v2::LbPair>,
     i2: traderjoe_v2::FactoryEvents,
     o: StoreSetProto<traderjoe_v2::Token>,
 ) {
-    for pair_created in i2.lb_pair_createds {
-        let pair_address = pair_created.lb_pair;
-
-        let pair = i.get_at(1, generate_key("Pair", &pair_address));
-
-        if let Some(pair) = pair {
-            let token_x_data = get_token_data(&pair_created.token_x);
-            let token_y_data = get_token_data(&pair_created.token_y);
-
-            let token_x = traderjoe_v2::Token {
-                address: append_0x(&Hex(pair_created.token_x).to_string()),
-                decimals: bigint_to_u64(&token_x_data.2),
-                symbol: token_x_data.1,
-                factory_address: append_0x(&Hex(DEXCANDLES_FACTORY).to_string()),
-                name: token_x_data.0,
-                total_supply: bigint_to_u64(&token_x_data.2),
-                ..Default::default()
-            };
-
-            let token_y = traderjoe_v2::Token {
-                address: append_0x(&Hex(pair_created.token_y).to_string()),
-                decimals: bigint_to_u64(&token_y_data.2),
-                symbol: token_y_data.1,
-                factory_address: append_0x(&Hex(DEXCANDLES_FACTORY).to_string()),
-                name: token_y_data.0,
-                total_supply: bigint_to_u64(&token_x_data.2),
-                ..Default::default()
-            };
-
-            o.set(
-                0,
-                generate_key("Pair", &token_y.address.to_string()),
-                &token_x,
-            );
-            o.set(
-                0,
-                generate_key("Pair", &token_y.address.to_string()),
-                &token_y,
-            );
-        }
-    }
-}
-
-#[substreams::handlers::store]
-pub fn store_pairs(i: traderjoe_v2::FactoryEvents, o: StoreSetProto<traderjoe_v2::LbPair>) {
-    for pair_created in i.lb_pair_createds {
-        let name = "";
-
-        let pair = traderjoe_v2::LbPair {
-            bin_step: pair_created.bin_step.to_string(),
-            token_x: pair_created.token_x,
-            token_y: pair_created.token_y,
-            timestamp: pair_created.evt_block_time,
-            name: name.to_string(),
-            block: pair_created.evt_block_number,
-            log_ordinal: pair_created.evt_index,
-            ..Default::default()
-        };
+    for pair_created in i2.lb_pairs {
+        let token_x = pair_created.token_x.unwrap();
+        let token_y = pair_created.token_y.unwrap();
 
         o.set(
             0,
-            generate_key("Pair", &pair_created.lb_pair.to_string()),
-            &pair,
+            generate_key("Token", &token_x.address).to_string(),
+            &token_x,
+        );
+        o.set(
+            0,
+            generate_key("Token", &token_y.address).to_string(),
+            &token_y,
         );
     }
 }
 
 #[substreams::handlers::store]
+pub fn store_pairs(i: traderjoe_v2::FactoryEvents, o: StoreSetProto<traderjoe_v2::LbPair>) {
+    for pair in i.lb_pairs {
+        o.set(0, generate_key("Pair", &pair.lb_pair.to_string()), &pair);
+    }
+}
+
+#[substreams::handlers::store]
 pub fn store_pair_count(i: traderjoe_v2::FactoryEvents, o: StoreAddBigInt) {
-    for pairs in i.lb_pair_createds {
+    for pairs in i.lb_pairs {
         o.add(
             pairs.evt_index,
             format!("factory:pairCount"),
@@ -321,8 +278,8 @@ pub fn store_pairs_tvl(
 
         let pool_address = &pair.id;
 
-        let token0_address = Hex(&pair.token_x).to_string();
-        let token1_address = Hex(&pair.token_y).to_string();
+        let token0_address = pair.token_x.unwrap().address;
+        let token1_address = pair.token_y.unwrap().address;
 
         let amount_x_in = 1;
         let amount_x_out = 1;
@@ -375,8 +332,8 @@ pub fn store_token_prices(
         let pool_address = &pair.id;
         let avax_price_usd = bundle.avax_price_usd;
 
-        let token0_address = Hex(&pair.token_x).to_string();
-        let token1_address = Hex(&pair.token_y).to_string();
+        let token0_address = pair.token_x.unwrap().address;
+        let token1_address = pair.token_y.unwrap().address;
 
         let amount_x_in = avax_price_usd;
         let amount_x_out = 1;

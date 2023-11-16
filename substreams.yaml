@@ -55,7 +55,7 @@ modules:
     kind: store
     initialBlock: 17821282
     updatePolicy: set
-    valueType: proto:traderjoe.v2.Pairs
+    valueType: proto:traderjoe.v2.LBPair
     inputs:
       - map: map_factory_events
 
@@ -72,8 +72,9 @@ modules:
     kind: store
     initialBlock: 17821282
     updatePolicy: set
-    valueType: proto:traderjoe.v2.LbFactory
+    valueType: proto:traderjoe.v2.Token
     inputs:
+      - store: store_pairs
       - map: map_factory_events
 
 ##############################################
@@ -85,6 +86,8 @@ modules:
     initialBlock: 17821282
     inputs:
       - store: store_pairs
+        mode: deltas
+      - store: store_tokens
         mode: deltas
       - store: store_pair_count
         mode: deltas

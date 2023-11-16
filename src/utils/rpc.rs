@@ -2,13 +2,17 @@ use crate::abi;
 
 use substreams_ethereum::rpc::RpcBatch;
 
-pub fn get_token_data(token_address: &Vec<u8>) -> (String, String, String) {
+pub fn get_token_data(token_address: &Vec<u8>) -> (String, String, String, String) {
     let contract_address = token_address;
     let batch_calls = RpcBatch::new();
     let responses = batch_calls
         .add(abi::erc20::functions::Name {}, contract_address.clone())
         .add(abi::erc20::functions::Symbol {}, contract_address.clone())
         .add(abi::erc20::functions::Decimals {}, contract_address.clone())
+        .add(
+            abi::erc20::functions::TotalSupply {},
+            contract_address.clone(),
+        )
         .execute()
         .unwrap()
         .responses;
@@ -25,7 +29,12 @@ pub fn get_token_data(token_address: &Vec<u8>) -> (String, String, String) {
         Some(contract_decimals) => contract_decimals.to_string(),
         None => "0".to_string(),
     };
+    let total_supply =
+        match RpcBatch::decode::<_, abi::erc20::functions::TotalSupply>(&responses[2]) {
+            Some(contract_total_supply) => contract_total_supply.to_string(),
+            None => "0".to_string(),
+        };
 
-    let tup: (String, String, String) = (name, symbol, decimals);
+    let tup: (String, String, String, String) = (name, symbol, decimals, total_supply);
     tup
 }

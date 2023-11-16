@@ -78,7 +78,7 @@ fn map_factory_events(
                     })
             })
             .collect(),
-        lb_pair_createds: blk
+        lb_pairs: blk
             .receipts()
             .flat_map(|view| {
                 view.receipt
@@ -89,7 +89,14 @@ fn map_factory_events(
                         if let Some(event) =
                             traderjoe_v2_factory_events::events::LbPairCreated::match_and_decode(log)
                         {
-                            return Some(traderjoe_v2::LbPairCreated {
+
+
+                let token_x_data = get_token_data(&event.token_x);
+                let token_y_data = get_token_data(&event.token_y);
+
+
+    
+                            return Some(traderjoe_v2::LbPair {
                                 evt_tx_hash: Hex(&view.transaction.hash).to_string(),
                                 evt_index: log.ordinal,
                                 evt_block_time: Some(blk.timestamp().to_owned()),
@@ -97,8 +104,29 @@ fn map_factory_events(
                                 bin_step: event.bin_step.to_string(),
                                 lb_pair: Hex(event.lb_pair).to_string(),
                                 pid: event.pid.to_string(),
-                                token_x: event.token_x,
-                                token_y: event.token_y,
+                                factory: append_0x(&Hex(DEXCANDLES_FACTORY).to_string()),
+                                token_x: Some(traderjoe_v2::Token {
+                                    address: append_0x(&Hex(event.token_x).to_string()),
+                                    decimals: bigint_to_u64(&token_x_data.2),
+                                    symbol: token_x_data.1,
+                                    factory_address: append_0x(&Hex(DEXCANDLES_FACTORY).to_string()),
+                                    name: token_x_data.0,
+                                    total_supply: bigint_to_u64(&token_x_data.2),
+                                    ..Default::default()
+
+                                }),
+                                token_y: Some(traderjoe_v2::Token {
+                                    address: append_0x(&Hex(event.token_y).to_string()),
+                                    decimals: bigint_to_u64(&token_y_data.2),
+                                    symbol: token_y_data.1,
+                                    factory_address: append_0x(&Hex(DEXCANDLES_FACTORY).to_string()),
+                                    name: token_y_data.0,
+                                    total_supply: bigint_to_u64(&token_x_data.3),
+                                    ..Default::default()
+
+                                }),
+                                ..Default::default()
+
                             });
                         }
 

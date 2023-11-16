@@ -11,7 +11,7 @@ pub struct FactoryEvents {
     #[prost(message, repeated, tag="2")]
     pub flash_loan_fee_sets: ::prost::alloc::vec::Vec<FlashLoanFeeSet>,
     #[prost(message, repeated, tag="3")]
-    pub lb_pair_createds: ::prost::alloc::vec::Vec<LbPairCreated>,
+    pub lb_pairs: ::prost::alloc::vec::Vec<LbPair>,
     #[prost(message, repeated, tag="4")]
     pub lb_pair_ignored_state_changeds: ::prost::alloc::vec::Vec<LbPairIgnoredStateChanged>,
 }
@@ -106,28 +106,6 @@ pub struct Token {
     pub derived_avax: ::prost::alloc::string::String,
     #[prost(string, tag="14")]
     pub fees_usd: ::prost::alloc::string::String,
-}
-#[allow(clippy::derive_partial_eq_without_eq)]
-#[derive(Clone, PartialEq, ::prost::Message)]
-pub struct LbPairCreated {
-    #[prost(string, tag="1")]
-    pub evt_tx_hash: ::prost::alloc::string::String,
-    #[prost(uint64, tag="2")]
-    pub evt_index: u64,
-    #[prost(message, optional, tag="3")]
-    pub evt_block_time: ::core::option::Option<::prost_types::Timestamp>,
-    #[prost(uint64, tag="4")]
-    pub evt_block_number: u64,
-    #[prost(bytes="vec", tag="5")]
-    pub token_x: ::prost::alloc::vec::Vec<u8>,
-    #[prost(bytes="vec", tag="6")]
-    pub token_y: ::prost::alloc::vec::Vec<u8>,
-    #[prost(string, tag="7")]
-    pub bin_step: ::prost::alloc::string::String,
-    #[prost(string, tag="8")]
-    pub lb_pair: ::prost::alloc::string::String,
-    #[prost(string, tag="9")]
-    pub pid: ::prost::alloc::string::String,
 }
 // ##################################//
 //           TEMPLATES              //
@@ -405,8 +383,8 @@ pub struct TraderJoeHourData {
     pub id: ::prost::alloc::string::String,
     #[prost(int32, tag="2")]
     pub date: i32,
-    #[prost(message, optional, tag="3")]
-    pub factory: ::core::option::Option<LbFactory>,
+    #[prost(string, tag="3")]
+    pub factory: ::prost::alloc::string::String,
     #[prost(string, tag="4")]
     pub volume_avax: ::prost::alloc::string::String,
     #[prost(string, tag="5")]
@@ -429,8 +407,8 @@ pub struct TraderJoeDayData {
     pub id: ::prost::alloc::string::String,
     #[prost(int32, tag="2")]
     pub date: i32,
-    #[prost(message, optional, tag="3")]
-    pub factory: ::core::option::Option<LbFactory>,
+    #[prost(string, tag="3")]
+    pub factory: ::prost::alloc::string::String,
     #[prost(string, tag="4")]
     pub volume_avax: ::prost::alloc::string::String,
     #[prost(string, tag="5")]
@@ -539,16 +517,16 @@ pub struct SJoeDayData {
 pub struct LbPair {
     #[prost(string, tag="1")]
     pub id: ::prost::alloc::string::String,
-    #[prost(message, optional, tag="2")]
-    pub factory: ::core::option::Option<LbFactory>,
+    #[prost(string, tag="2")]
+    pub factory: ::prost::alloc::string::String,
     #[prost(string, tag="3")]
     pub name: ::prost::alloc::string::String,
     #[prost(string, tag="4")]
     pub base_fee_pct: ::prost::alloc::string::String,
-    #[prost(bytes="vec", tag="5")]
-    pub token_x: ::prost::alloc::vec::Vec<u8>,
-    #[prost(bytes="vec", tag="6")]
-    pub token_y: ::prost::alloc::vec::Vec<u8>,
+    #[prost(message, optional, tag="5")]
+    pub token_x: ::core::option::Option<Token>,
+    #[prost(message, optional, tag="6")]
+    pub token_y: ::core::option::Option<Token>,
     #[prost(string, tag="7")]
     pub bin_step: ::prost::alloc::string::String,
     #[prost(string, tag="8")]
@@ -588,11 +566,21 @@ pub struct LbPair {
     #[prost(string, tag="25")]
     pub liquidity_provider_count: ::prost::alloc::string::String,
     #[prost(message, optional, tag="26")]
-    pub timestamp: ::core::option::Option<::prost_types::Timestamp>,
+    pub evt_block_time: ::core::option::Option<::prost_types::Timestamp>,
     #[prost(uint64, tag="27")]
     pub block: u64,
     #[prost(uint64, tag="28")]
     pub log_ordinal: u64,
+    #[prost(string, tag="29")]
+    pub evt_tx_hash: ::prost::alloc::string::String,
+    #[prost(uint64, tag="30")]
+    pub evt_index: u64,
+    #[prost(uint64, tag="31")]
+    pub evt_block_number: u64,
+    #[prost(string, tag="32")]
+    pub pid: ::prost::alloc::string::String,
+    #[prost(string, tag="33")]
+    pub lb_pair: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

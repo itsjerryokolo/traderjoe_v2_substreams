@@ -20,6 +20,7 @@ use substreams::errors::Error;
 #[substreams::handlers::map]
 pub fn graph_out(
     pairs: Deltas<DeltaProto<traderjoe_v2::LbPair>>,
+    tokens: Deltas<DeltaProto<traderjoe_v2::Token>>,
     pair_count: Deltas<DeltaBigInt>,
 ) -> Result<EntityChanges, Error> {
     let mut tables = Tables::new();
