@@ -88,8 +88,8 @@ pub struct Token {
     pub name: ::prost::alloc::string::String,
     #[prost(uint64, tag="5")]
     pub decimals: u64,
-    #[prost(uint64, tag="6")]
-    pub total_supply: u64,
+    #[prost(string, tag="6")]
+    pub total_supply: ::prost::alloc::string::String,
     #[prost(string, tag="7")]
     pub volume: ::prost::alloc::string::String,
     #[prost(string, tag="8")]
@@ -140,12 +140,12 @@ pub struct CompositionFee {
     pub sender: ::prost::alloc::vec::Vec<u8>,
     #[prost(bytes="vec", tag="2")]
     pub recipient: ::prost::alloc::vec::Vec<u8>,
-    #[prost(uint64, tag="3")]
-    pub id: u64,
-    #[prost(uint64, tag="4")]
-    pub fees_x: u64,
-    #[prost(uint64, tag="5")]
-    pub fees_y: u64,
+    #[prost(string, tag="3")]
+    pub id: ::prost::alloc::string::String,
+    #[prost(string, tag="4")]
+    pub fees_x: ::prost::alloc::string::String,
+    #[prost(string, tag="5")]
+    pub fees_y: ::prost::alloc::string::String,
     #[prost(string, tag="10")]
     pub evt_tx_hash: ::prost::alloc::string::String,
     #[prost(uint64, tag="11")]
@@ -162,12 +162,12 @@ pub struct DepositedToBin {
     pub sender: ::prost::alloc::vec::Vec<u8>,
     #[prost(bytes="vec", tag="2")]
     pub recipient: ::prost::alloc::vec::Vec<u8>,
-    #[prost(uint64, tag="3")]
-    pub id: u64,
-    #[prost(uint64, tag="4")]
-    pub amount_x: u64,
-    #[prost(uint64, tag="5")]
-    pub amount_y: u64,
+    #[prost(string, tag="3")]
+    pub id: ::prost::alloc::string::String,
+    #[prost(string, tag="4")]
+    pub amount_x: ::prost::alloc::string::String,
+    #[prost(string, tag="5")]
+    pub amount_y: ::prost::alloc::string::String,
     #[prost(string, tag="10")]
     pub evt_tx_hash: ::prost::alloc::string::String,
     #[prost(uint64, tag="11")]
@@ -184,10 +184,10 @@ pub struct FeesCollected {
     pub sender: ::prost::alloc::vec::Vec<u8>,
     #[prost(bytes="vec", tag="2")]
     pub recipient: ::prost::alloc::vec::Vec<u8>,
-    #[prost(uint64, tag="3")]
-    pub amount_x: u64,
-    #[prost(uint64, tag="4")]
-    pub amount_y: u64,
+    #[prost(string, tag="3")]
+    pub amount_x: ::prost::alloc::string::String,
+    #[prost(string, tag="4")]
+    pub amount_y: ::prost::alloc::string::String,
     #[prost(uint64, tag="11")]
     pub evt_index: u64,
     #[prost(message, optional, tag="12")]
@@ -206,10 +206,10 @@ pub struct FlashLoan {
     pub receiver: ::prost::alloc::vec::Vec<u8>,
     #[prost(bytes="vec", tag="3")]
     pub token: ::prost::alloc::vec::Vec<u8>,
-    #[prost(uint64, tag="4")]
-    pub amount: u64,
-    #[prost(uint64, tag="5")]
-    pub fee: u64,
+    #[prost(string, tag="4")]
+    pub amount: ::prost::alloc::string::String,
+    #[prost(string, tag="5")]
+    pub fee: ::prost::alloc::string::String,
     #[prost(string, tag="10")]
     pub evt_tx_hash: ::prost::alloc::string::String,
     #[prost(uint64, tag="11")]
@@ -226,10 +226,10 @@ pub struct ProtocolFeesCollected {
     pub sender: ::prost::alloc::vec::Vec<u8>,
     #[prost(bytes="vec", tag="2")]
     pub recipient: ::prost::alloc::vec::Vec<u8>,
-    #[prost(uint64, tag="3")]
-    pub amount_x: u64,
-    #[prost(uint64, tag="4")]
-    pub amount_y: u64,
+    #[prost(string, tag="3")]
+    pub amount_x: ::prost::alloc::string::String,
+    #[prost(string, tag="4")]
+    pub amount_y: ::prost::alloc::string::String,
     #[prost(string, tag="10")]
     pub evt_tx_hash: ::prost::alloc::string::String,
     #[prost(uint64, tag="11")]
@@ -250,14 +250,14 @@ pub struct Swap {
     pub id: ::prost::alloc::string::String,
     #[prost(bool, tag="4")]
     pub swap_for_y: bool,
-    #[prost(uint64, tag="5")]
-    pub amount_in: u64,
-    #[prost(uint64, tag="6")]
-    pub amount_out: u64,
-    #[prost(uint64, tag="7")]
-    pub volatility_accumulated: u64,
-    #[prost(uint64, tag="8")]
-    pub fees: u64,
+    #[prost(string, tag="5")]
+    pub amount_in: ::prost::alloc::string::String,
+    #[prost(string, tag="6")]
+    pub amount_out: ::prost::alloc::string::String,
+    #[prost(string, tag="7")]
+    pub volatility_accumulated: ::prost::alloc::string::String,
+    #[prost(string, tag="8")]
+    pub fees: ::prost::alloc::string::String,
     #[prost(string, tag="10")]
     pub evt_tx_hash: ::prost::alloc::string::String,
     #[prost(uint64, tag="11")]
@@ -298,10 +298,10 @@ pub struct TransferSingle {
     pub from: ::prost::alloc::vec::Vec<u8>,
     #[prost(bytes="vec", tag="3")]
     pub to: ::prost::alloc::vec::Vec<u8>,
-    #[prost(uint64, tag="4")]
-    pub id: u64,
-    #[prost(uint64, tag="5")]
-    pub amount: u64,
+    #[prost(string, tag="4")]
+    pub id: ::prost::alloc::string::String,
+    #[prost(string, tag="5")]
+    pub amount: ::prost::alloc::string::String,
     #[prost(string, tag="10")]
     pub evt_tx_hash: ::prost::alloc::string::String,
     #[prost(uint64, tag="11")]
@@ -318,12 +318,12 @@ pub struct WithdrawnFromBin {
     pub sender: ::prost::alloc::vec::Vec<u8>,
     #[prost(bytes="vec", tag="2")]
     pub recipient: ::prost::alloc::vec::Vec<u8>,
-    #[prost(uint64, tag="3")]
-    pub id: u64,
-    #[prost(uint64, tag="4")]
-    pub amount_x: u64,
-    #[prost(uint64, tag="5")]
-    pub amount_y: u64,
+    #[prost(string, tag="3")]
+    pub id: ::prost::alloc::string::String,
+    #[prost(string, tag="4")]
+    pub amount_x: ::prost::alloc::string::String,
+    #[prost(string, tag="5")]
+    pub amount_y: ::prost::alloc::string::String,
     #[prost(string, tag="10")]
     pub evt_tx_hash: ::prost::alloc::string::String,
     #[prost(uint64, tag="11")]

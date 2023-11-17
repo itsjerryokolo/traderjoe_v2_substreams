@@ -8,7 +8,7 @@ use substreams_entity_change::{pb::entity::EntityChanges, tables::Tables};
 
 use crate::pb::traderjoe::v2 as traderjoe_v2;
 use substreams::{
-    pb::substreams::{module::input::Store, store_delta::Operation},
+    pb::substreams::{module::input::Store, store_delta::Operation, Clock},
     scalar::{BigDecimal, BigInt},
     store::{Delta, DeltaBigInt, DeltaProto, Deltas, StoreGetProto},
 };
@@ -19,9 +19,11 @@ use substreams::errors::Error;
 
 #[substreams::handlers::map]
 pub fn graph_out(
+    clock: Clock,
     pairs: Deltas<DeltaProto<traderjoe_v2::LbPair>>,
     tokens: Deltas<DeltaProto<traderjoe_v2::Token>>,
     pair_count: Deltas<DeltaBigInt>,
+    tx_count: Deltas<DeltaBigInt>,
 ) -> Result<EntityChanges, Error> {
     let mut tables = Tables::new();
 

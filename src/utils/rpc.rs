@@ -30,7 +30,7 @@ pub fn get_token_data(token_address: &Vec<u8>) -> (String, String, String, Strin
         None => "0".to_string(),
     };
     let total_supply =
-        match RpcBatch::decode::<_, abi::erc20::functions::TotalSupply>(&responses[2]) {
+        match RpcBatch::decode::<_, abi::erc20::functions::TotalSupply>(&responses[3]) {
             Some(contract_total_supply) => contract_total_supply.to_string(),
             None => "0".to_string(),
         };

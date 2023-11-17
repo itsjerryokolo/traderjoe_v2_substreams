@@ -3,13 +3,15 @@ use crate::abi;
 use crate::pb::traderjoe::v2 as traderjoe_v2;
 
 use abi::lb_pair as traderjoe_v2_pair_events;
-use substreams::Hex;
+use substreams::{log, Hex};
 use substreams_ethereum::{pb::eth, Event};
 
 #[substreams::handlers::map]
 fn map_template_events(
     blk: eth::v2::Block,
 ) -> Result<traderjoe_v2::TemplateEvents, substreams::errors::Error> {
+    log::info!("Template Handler - 1");
+
     Ok(traderjoe_v2::TemplateEvents {
         swaps: blk
             .receipts()
@@ -27,10 +29,10 @@ fn map_template_events(
                             id: event.id.to_string(),
                             sender: event.sender,
                             recipient: event.recipient,
-                            amount_in: event.amount_in.to_u64(),
-                            amount_out: event.amount_out.to_u64(),
-                            fees: event.fees.to_u64(),
-                            volatility_accumulated: event.volatility_accumulated.to_u64(),
+                            amount_in: event.amount_in.to_string(),
+                            amount_out: event.amount_out.to_string(),
+                            fees: event.fees.to_string(),
+                            volatility_accumulated: event.volatility_accumulated.to_string(),
                         });
                     }
 
@@ -52,9 +54,9 @@ fn map_template_events(
                             evt_block_number: blk.number,
                             sender: event.sender,
                             recipient: event.recipient,
-                            id: event.id.to_u64(),
-                            fees_x: event.fees_x.to_u64(),
-                            fees_y: event.fees_y.to_u64(),
+                            id: event.id.to_string(),
+                            fees_x: event.fees_x.to_string(),
+                            fees_y: event.fees_y.to_string(),
                         });
                     }
                     None
@@ -76,9 +78,9 @@ fn map_template_events(
                             evt_block_number: blk.number,
                             sender: event.sender,
                             recipient: event.recipient,
-                            id: event.id.to_u64(),
-                            amount_x: event.amount_x.to_u64(),
-                            amount_y: event.amount_y.to_u64(),
+                            id: event.id.to_string(),
+                            amount_x: event.amount_x.to_string(),
+                            amount_y: event.amount_y.to_string(),
                         });
                     }
                     None
@@ -96,8 +98,8 @@ fn map_template_events(
                         return Some(traderjoe_v2::FeesCollected {
                             sender: event.sender,
                             recipient: event.recipient,
-                            amount_x: event.amount_x.to_u64(),
-                            amount_y: event.amount_y.to_u64(),
+                            amount_x: event.amount_x.to_string(),
+                            amount_y: event.amount_y.to_string(),
                             evt_index: log.ordinal,
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
@@ -124,8 +126,8 @@ fn map_template_events(
                             sender: event.sender,
                             receiver: event.receiver,
                             token: event.token,
-                            amount: event.amount.to_u64(),
-                            fee: event.fee.to_u64(),
+                            amount: event.amount.to_string(),
+                            fee: event.fee.to_string(),
                         });
                     }
                     None
@@ -148,8 +150,8 @@ fn map_template_events(
                             evt_block_number: blk.number,
                             sender: event.sender,
                             recipient: event.recipient,
-                            amount_x: event.amount_x.to_u64(),
-                            amount_y: event.amount_y.to_u64(),
+                            amount_x: event.amount_x.to_string(),
+                            amount_y: event.amount_y.to_string(),
                         });
                     }
                     None
@@ -194,8 +196,8 @@ fn map_template_events(
                             sender: event.sender,
                             from: event.from,
                             to: event.to,
-                            id: event.id.to_u64(),
-                            amount: event.amount.to_u64(),
+                            id: event.id.to_string(),
+                            amount: event.amount.to_string(),
                         });
                     }
                     None
@@ -217,9 +219,9 @@ fn map_template_events(
                             evt_block_number: blk.number,
                             sender: event.sender,
                             recipient: event.recipient,
-                            id: event.id.to_u64(),
-                            amount_x: event.amount_x.to_u64(),
-                            amount_y: event.amount_y.to_u64(),
+                            id: event.id.to_string(),
+                            amount_x: event.amount_x.to_string(),
+                            amount_y: event.amount_y.to_string(),
                         });
                     }
                     None

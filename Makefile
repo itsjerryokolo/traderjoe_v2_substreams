@@ -38,6 +38,10 @@ PHONY:go
 go: 
 	substreams gui -e mainnet.eth.streamingfast.io:443 substreams.yaml graph_out -s 17821282 -t +1000000 --debug-modules-output=store_pair_count
 
+PHONY:te
+te: 
+	substreams gui  substreams.yaml map_template_events -s 17821282 -t +50000
+
 PHONY:ga
 ga: 
 	substreams run -e mainnet.eth.streamingfast.io:443 substreams.yaml graph_out -s 17821282 -t +1000000 --debug-modules-output=store_pair_count -o json

@@ -38,7 +38,7 @@ modules:
     kind: map
     initialBlock: 17821282
     inputs:
-      - source: proto:traderjoe.v2.FactoryEvents
+      - source: sf.ethereum.type.v2.Block
     output:
       type: proto:traderjoe.v2.TemplateEvents
 
@@ -67,6 +67,16 @@ modules:
     inputs:
       - map: map_factory_events
 
+  - name: store_total_tx_counts
+    kind: store
+    initialBlock: 17821282
+    updatePolicy: add
+    valueType: bigint
+    inputs:
+      - source: sf.substreams.v1.Clock
+      - map: map_factory_events
+      - map: map_template_events
+
     #Tokens
   - name: store_tokens
     kind: store
@@ -85,11 +95,14 @@ modules:
     kind: map
     initialBlock: 17821282
     inputs:
+      - source: sf.substreams.v1.Clock
       - store: store_pairs
         mode: deltas
       - store: store_tokens
         mode: deltas
       - store: store_pair_count
+        mode: deltas
+      - store: store_total_tx_counts
         mode: deltas
     output:
       type: proto:substreams.entity.v1.EntityChanges

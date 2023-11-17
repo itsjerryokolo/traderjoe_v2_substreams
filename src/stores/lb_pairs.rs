@@ -41,11 +41,11 @@ pub fn store_total_tx_counts(
     let prev_hour_id = hour_id - 1;
     let factory_addr = Hex(DEXCANDLES_FACTORY).to_string();
 
-    output.delete_prefix(0, &format!("SJoeDayData:{prev_day_id}:"));
-    output.delete_prefix(0, &format!("LbPairDayData:{prev_day_id}:"));
-    output.delete_prefix(0, &format!("LbPairHourData:{prev_hour_id}:"));
-    output.delete_prefix(0, &format!("TokenDayData:{prev_day_id}:"));
-    output.delete_prefix(0, &format!("TokenHourData:{prev_hour_id}:"));
+    // output.delete_prefix(0, &format!("SJoeDayData:{prev_day_id}:"));
+    // output.delete_prefix(0, &format!("LbPairDayData:{prev_day_id}:"));
+    // output.delete_prefix(0, &format!("LbPairHourData:{prev_hour_id}:"));
+    // output.delete_prefix(0, &format!("TokenDayData:{prev_day_id}:"));
+    // output.delete_prefix(0, &format!("TokenHourData:{prev_hour_id}:"));
 
     for event in factory_events.lb_pairs {
         let pool_address = &event.lb_pair;
@@ -75,7 +75,7 @@ pub fn store_total_tx_counts(
         let pool_address = Hex(event.lb_pair).to_string();
 
         output.add_many(
-            event.evt_index,
+            0,
             &vec![
                 format!("pool:{pool_address}"),
                 format!("factory:{factory_addr}"),
@@ -93,7 +93,7 @@ pub fn store_total_tx_counts(
 
     for event in factory_events.flash_loan_fee_sets {
         output.add_many(
-            event.evt_index,
+            0,
             &vec![
                 format!("factory:{factory_addr}"),
                 format!("SJoeDayData:{day_id}"),
@@ -104,7 +104,7 @@ pub fn store_total_tx_counts(
 
     for event in factory_events.fee_parameters_sets {
         output.add_many(
-            event.evt_index,
+            0,
             &vec![
                 format!("factory:{factory_addr}"),
                 format!("SJoeDayData:{day_id}"),
@@ -119,7 +119,7 @@ pub fn store_total_tx_counts(
 
     for event in template_events.swaps {
         output.add_many(
-            event.evt_index,
+            0,
             &vec![
                 format!("factory:{factory_addr}"),
                 format!("SJoeDayData:{day_id}"),
@@ -130,7 +130,7 @@ pub fn store_total_tx_counts(
 
     for event in template_events.composition_fees {
         output.add_many(
-            event.evt_index,
+            0,
             &vec![
                 format!("factory:{factory_addr}"),
                 format!("SJoeDayData:{day_id}"),
@@ -140,7 +140,7 @@ pub fn store_total_tx_counts(
     }
     for event in template_events.deposited_to_bins {
         output.add_many(
-            event.evt_index,
+            0,
             &vec![
                 format!("factory:{factory_addr}"),
                 format!("SJoeDayData:{day_id}"),
@@ -151,7 +151,7 @@ pub fn store_total_tx_counts(
 
     for event in template_events.transfer_batches {
         output.add_many(
-            event.evt_index,
+            0,
             &vec![
                 format!("factory:{factory_addr}"),
                 format!("SJoeDayData:{day_id}"),
@@ -161,7 +161,7 @@ pub fn store_total_tx_counts(
     }
     for event in template_events.flash_loans {
         output.add_many(
-            event.evt_index,
+            0,
             &vec![
                 format!("factory:{factory_addr}"),
                 format!("SJoeDayData:{day_id}"),
@@ -172,7 +172,7 @@ pub fn store_total_tx_counts(
 
     for event in template_events.fees_collected {
         output.add_many(
-            event.evt_index,
+            0,
             &vec![
                 format!("factory:{factory_addr}"),
                 format!("SJoeDayData:{day_id}"),
@@ -183,7 +183,7 @@ pub fn store_total_tx_counts(
 
     for event in template_events.transfer_singles {
         output.add_many(
-            event.evt_index,
+            0,
             &vec![
                 format!("factory:{factory_addr}"),
                 format!("SJoeDayData:{day_id}"),
@@ -194,7 +194,7 @@ pub fn store_total_tx_counts(
 
     for event in template_events.protocol_fees_collected {
         output.add_many(
-            event.evt_index,
+            0,
             &vec![
                 format!("factory:{factory_addr}"),
                 format!("SJoeDayData:{day_id}"),
@@ -205,7 +205,7 @@ pub fn store_total_tx_counts(
 
     for event in template_events.withdrawn_from_bins {
         output.add_many(
-            event.evt_index,
+            0,
             &vec![
                 format!("factory:{factory_addr}"),
                 format!("SJoeDayData:{day_id}"),

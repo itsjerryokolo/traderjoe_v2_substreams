@@ -56,7 +56,7 @@ message Token {
   string symbol = 3;
   string name = 4;
   uint64 decimals = 5;
-  uint64 total_supply = 6;
+  string total_supply = 6;
  string volume = 7;
  string volume_usd = 8;
  string untracked_volume_usd = 9;
@@ -89,9 +89,9 @@ message TemplateEvents {
 message CompositionFee {
   bytes sender = 1;
   bytes recipient = 2;
-  uint64 id = 3;
-  uint64 feesX = 4;
-  uint64 feesY = 5;
+  string id = 3;
+  string feesX = 4;
+  string feesY = 5;
   string evt_tx_hash = 10;
   uint64 evt_index = 11;
   google.protobuf.Timestamp evt_block_time = 12;
@@ -101,9 +101,9 @@ message CompositionFee {
 message DepositedToBin {
   bytes sender = 1;
   bytes recipient = 2;
-  uint64 id = 3;
-  uint64 amountX = 4;
-  uint64 amountY = 5;
+  string id = 3;
+  string amountX = 4;
+  string amountY = 5;
   string evt_tx_hash = 10;
   uint64 evt_index = 11;
   google.protobuf.Timestamp evt_block_time = 12;
@@ -113,8 +113,8 @@ message DepositedToBin {
 message FeesCollected {
   bytes sender = 1;
   bytes recipient = 2;
-  uint64 amountX = 3;
-  uint64 amountY = 4;
+  string amountX = 3;
+  string amountY = 4;
   uint64 evt_index = 11;
   google.protobuf.Timestamp evt_block_time = 12;
   uint64 evt_block_number = 13;
@@ -127,8 +127,8 @@ message FlashLoan {
   bytes sender = 1;
   bytes receiver = 2;
   bytes token = 3;
-  uint64 amount = 4;
-  uint64 fee = 5;
+  string amount = 4;
+  string fee = 5;
   string evt_tx_hash = 10;
   uint64 evt_index = 11;
   google.protobuf.Timestamp evt_block_time = 12;
@@ -139,8 +139,8 @@ message FlashLoan {
 message ProtocolFeesCollected {
   bytes sender = 1;
   bytes recipient = 2;
-  uint64 amountX = 3;
-  uint64 amountY = 4;
+  string amountX = 3;
+  string amountY = 4;
   string evt_tx_hash = 10;
   uint64 evt_index = 11;
   google.protobuf.Timestamp evt_block_time = 12;
@@ -152,10 +152,10 @@ message Swap {
   bytes recipient = 2;
   string id = 3;
   bool swapForY = 4;
-  uint64 amountIn = 5;
-  uint64 amountOut = 6;
-  uint64 volatility_accumulated = 7;
-  uint64 fees = 8;
+  string amountIn = 5;
+  string amountOut = 6;
+  string volatility_accumulated = 7;
+  string fees = 8;
   string evt_tx_hash = 10;
   uint64 evt_index = 11;
   google.protobuf.Timestamp evt_block_time = 12;
@@ -178,8 +178,8 @@ message TransferSingle {
   bytes sender = 1;
   bytes from = 2;
   bytes to = 3;
-  uint64 id = 4;
-  uint64 amount = 5;
+  string id = 4;
+  string amount = 5;
   string evt_tx_hash = 10;
   uint64 evt_index = 11;
   google.protobuf.Timestamp evt_block_time = 12;
@@ -189,9 +189,9 @@ message TransferSingle {
 message WithdrawnFromBin {
   bytes sender = 1;
   bytes recipient = 2;
-  uint64 id = 3;
-  uint64 amountX = 4;
-  uint64 amountY = 5;
+  string id = 3;
+  string amountX = 4;
+  string amountY = 5;
   string evt_tx_hash = 10;
   uint64 evt_index = 11;
   google.protobuf.Timestamp evt_block_time = 12;

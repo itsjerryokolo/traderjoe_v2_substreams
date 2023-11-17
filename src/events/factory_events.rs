@@ -111,7 +111,7 @@ fn map_factory_events(
                                     symbol: token_x_data.1,
                                     factory_address: append_0x(&Hex(DEXCANDLES_FACTORY).to_string()),
                                     name: token_x_data.0,
-                                    total_supply: bigint_to_u64(&token_x_data.2),
+                                    total_supply: token_x_data.3,
                                     ..Default::default()
 
                                 }),
@@ -121,7 +121,7 @@ fn map_factory_events(
                                     symbol: token_y_data.1,
                                     factory_address: append_0x(&Hex(DEXCANDLES_FACTORY).to_string()),
                                     name: token_y_data.0,
-                                    total_supply: bigint_to_u64(&token_x_data.3),
+                                    total_supply: token_y_data.3,
                                     ..Default::default()
 
                                 }),
