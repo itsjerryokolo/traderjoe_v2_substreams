@@ -1,7 +1,7 @@
 use std::str::FromStr;
 
 use num_traits::Signed;
-use substreams::log;
+use substreams::{log, scalar::BigDecimal};
 
 use num_traits::ToPrimitive;
 
@@ -81,6 +81,10 @@ pub fn to_bigint(str: &str) -> BigInt {
 
 pub fn bigint_to_u64(str: &str) -> u64 {
     BigInt::from_str(str).unwrap().to_u64().unwrap()
+}
+
+pub fn str_to_bigdecimal(str: &str) -> BigDecimal {
+    BigDecimal::from_str(str).unwrap()
 }
 
 pub fn get_sorted_price(token_x: &str, token_y: &str, value_0: &str, value_1: &str) -> String {

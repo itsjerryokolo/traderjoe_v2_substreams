@@ -50,7 +50,6 @@ modules:
 ##############################################
   
     #Pairs
-
   - name: store_pairs
     kind: store
     initialBlock: 17821282
@@ -67,6 +66,7 @@ modules:
     inputs:
       - map: map_factory_events
 
+    #Transactions
   - name: store_total_tx_counts
     kind: store
     initialBlock: 17821282

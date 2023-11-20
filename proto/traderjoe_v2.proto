@@ -160,6 +160,7 @@ message Swap {
   uint64 evt_index = 11;
   google.protobuf.Timestamp evt_block_time = 12;
   uint64 evt_block_number = 13;
+  Bundle bundle = 14;
 }
 
 message TransferBatch {
@@ -207,8 +208,7 @@ message WithdrawnFromBin {
 //          ENTITIES               //
 //################################//
 message Bundle {
-  string id = 1;
-  string avax_price_usd = 2;
+  string avax_price_usd = 1;
 }
 
 

@@ -1,4 +1,4 @@
-use crate::abi;
+use crate::{abi, utils::pricing::get_avax_price_in_usd};
 
 use crate::pb::traderjoe::v2 as traderjoe_v2;
 
@@ -26,6 +26,9 @@ fn map_template_events(
                             evt_block_time: Some(blk.timestamp().to_owned()),
                             evt_block_number: blk.number,
                             swap_for_y: event.swap_for_y,
+                            bundle: Some(traderjoe_v2::Bundle {
+                                avax_price_usd: get_avax_price_in_usd().to_string(),
+                            }),
                             id: event.id.to_string(),
                             sender: event.sender,
                             recipient: event.recipient,

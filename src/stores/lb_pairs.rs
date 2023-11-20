@@ -19,14 +19,6 @@ use substreams::{
 
 use crate::pb::traderjoe::v2 as traderjoe_v2;
 
-// pub const BIG_DECIMAL_1E6: BigDecimal = BigDecimal::from_str("1_000_000").unwrap();
-// pub static BIG_DECIMAL_1E10: BigDecimal = BigDecimal::from_str("10_000_000_000").unwrap();
-// pub static BIG_DECIMAL_1E12: BigDecimal = BigDecimal::from_str("1_000_000_000_000").unwrap();
-// pub static BIG_DECIMAL_1E18: BigDecimal =
-//     BigDecimal::from_str("1_000_000_000_000_000_000").unwrap();
-// pub static BIG_DECIMAL_ZERO: BigDecimal = BigDecimal::from_str("0").unwrap();
-// pub static BIG_DECIMAL_ONE: BigDecimal = BigDecimal::from_str("1").unwrap();
-
 #[substreams::handlers::store]
 pub fn store_total_tx_counts(
     clock: Clock,
@@ -41,11 +33,11 @@ pub fn store_total_tx_counts(
     let prev_hour_id = hour_id - 1;
     let factory_addr = Hex(DEXCANDLES_FACTORY).to_string();
 
-    // output.delete_prefix(0, &format!("SJoeDayData:{prev_day_id}:"));
-    // output.delete_prefix(0, &format!("LbPairDayData:{prev_day_id}:"));
-    // output.delete_prefix(0, &format!("LbPairHourData:{prev_hour_id}:"));
-    // output.delete_prefix(0, &format!("TokenDayData:{prev_day_id}:"));
-    // output.delete_prefix(0, &format!("TokenHourData:{prev_hour_id}:"));
+    output.delete_prefix(0, &format!("SJoeDayData:{prev_day_id}:"));
+    output.delete_prefix(0, &format!("LbPairDayData:{prev_day_id}:"));
+    output.delete_prefix(0, &format!("LbPairHourData:{prev_hour_id}:"));
+    output.delete_prefix(0, &format!("TokenDayData:{prev_day_id}:"));
+    output.delete_prefix(0, &format!("TokenHourData:{prev_hour_id}:"));
 
     for event in factory_events.lb_pairs {
         let pool_address = &event.lb_pair;
@@ -66,6 +58,8 @@ pub fn store_total_tx_counts(
                 format!("TokenDayData:{day_id}:{token1_addr}"),
                 format!("TokenHourData:{hour_id}:{token0_addr}"),
                 format!("TokenHourData:{hour_id}:{token1_addr}"),
+                format!("TraderJoeDayData:{day_id}:{pool_address}"),
+                format!("TraderJoeHourData:{hour_id}:{pool_address}"),
             ],
             &BigInt::from(1 as i32),
         );
@@ -91,7 +85,7 @@ pub fn store_total_tx_counts(
         );
     }
 
-    for event in factory_events.flash_loan_fee_sets {
+    for _ in factory_events.flash_loan_fee_sets {
         output.add_many(
             0,
             &vec![
@@ -102,7 +96,7 @@ pub fn store_total_tx_counts(
         );
     }
 
-    for event in factory_events.fee_parameters_sets {
+    for _ in factory_events.fee_parameters_sets {
         output.add_many(
             0,
             &vec![
@@ -117,7 +111,7 @@ pub fn store_total_tx_counts(
     //          TEMPLATES              //
     //################################//
 
-    for event in template_events.swaps {
+    for _ in template_events.swaps {
         output.add_many(
             0,
             &vec![
@@ -128,7 +122,7 @@ pub fn store_total_tx_counts(
         );
     }
 
-    for event in template_events.composition_fees {
+    for _ in template_events.composition_fees {
         output.add_many(
             0,
             &vec![
@@ -138,28 +132,7 @@ pub fn store_total_tx_counts(
             &BigInt::from(1 as i32),
         );
     }
-    for event in template_events.deposited_to_bins {
-        output.add_many(
-            0,
-            &vec![
-                format!("factory:{factory_addr}"),
-                format!("SJoeDayData:{day_id}"),
-            ],
-            &BigInt::from(1 as i32),
-        );
-    }
-
-    for event in template_events.transfer_batches {
-        output.add_many(
-            0,
-            &vec![
-                format!("factory:{factory_addr}"),
-                format!("SJoeDayData:{day_id}"),
-            ],
-            &BigInt::from(1 as i32),
-        );
-    }
-    for event in template_events.flash_loans {
+    for _ in template_events.deposited_to_bins {
         output.add_many(
             0,
             &vec![
@@ -170,7 +143,17 @@ pub fn store_total_tx_counts(
         );
     }
 
-    for event in template_events.fees_collected {
+    for _ in template_events.transfer_batches {
+        output.add_many(
+            0,
+            &vec![
+                format!("factory:{factory_addr}"),
+                format!("SJoeDayData:{day_id}"),
+            ],
+            &BigInt::from(1 as i32),
+        );
+    }
+    for _ in template_events.flash_loans {
         output.add_many(
             0,
             &vec![
@@ -181,7 +164,7 @@ pub fn store_total_tx_counts(
         );
     }
 
-    for event in template_events.transfer_singles {
+    for _ in template_events.fees_collected {
         output.add_many(
             0,
             &vec![
@@ -192,7 +175,7 @@ pub fn store_total_tx_counts(
         );
     }
 
-    for event in template_events.protocol_fees_collected {
+    for _ in template_events.transfer_singles {
         output.add_many(
             0,
             &vec![
@@ -203,7 +186,18 @@ pub fn store_total_tx_counts(
         );
     }
 
-    for event in template_events.withdrawn_from_bins {
+    for _ in template_events.protocol_fees_collected {
+        output.add_many(
+            0,
+            &vec![
+                format!("factory:{factory_addr}"),
+                format!("SJoeDayData:{day_id}"),
+            ],
+            &BigInt::from(1 as i32),
+        );
+    }
+
+    for _ in template_events.withdrawn_from_bins {
         output.add_many(
             0,
             &vec![
@@ -361,7 +355,7 @@ pub fn store_token_prices(
 }
 
 #[substreams::handlers::store]
-pub fn store_ticks(
+pub fn store_volumes(
     clock: Clock,
     pairs: StoreGetProto<traderjoe_v2::LbPair>,
     bundles: StoreGetProto<traderjoe_v2::Bundle>,
@@ -384,14 +378,12 @@ pub fn store_ticks(
         let pool_address = &pair.id;
         let avax_price_usd = bundle.avax_price_usd;
 
-        let token0_address = &pair.token_x;
-        let token1_address = &pair.token_y;
-
-        let open = avax_price_usd;
-        let high = 1;
-
-        let low = 1;
-        let close = 1;
+        let volume = &pair.token_x;
+        let volume_avax = &pair.token_x;
+        let volume_usd = &pair.token_y;
+        let volume_token_x = &pair.token_x;
+        let volume_token_y = &pair.token_x;
+        let untracked_volume_usd = &pair.token_y;
 
         store.set_many(
             pair.log_ordinal,

@@ -266,6 +266,8 @@ pub struct Swap {
     pub evt_block_time: ::core::option::Option<::prost_types::Timestamp>,
     #[prost(uint64, tag="13")]
     pub evt_block_number: u64,
+    #[prost(message, optional, tag="14")]
+    pub bundle: ::core::option::Option<Bundle>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]
@@ -340,8 +342,6 @@ pub struct WithdrawnFromBin {
 #[derive(Clone, PartialEq, ::prost::Message)]
 pub struct Bundle {
     #[prost(string, tag="1")]
-    pub id: ::prost::alloc::string::String,
-    #[prost(string, tag="2")]
     pub avax_price_usd: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
