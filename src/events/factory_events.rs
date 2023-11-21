@@ -1,14 +1,19 @@
+use std::str::FromStr;
+
 use crate::abi;
 use crate::utils;
 
 use crate::pb::traderjoe::v2 as traderjoe_v2;
+use crate::utils::constants::BIG_DECIMAL_1E10;
 use crate::utils::helper::append_0x;
 use crate::utils::helper::bigint_to_u64;
+use crate::utils::rpc::get_bin_step;
 use crate::utils::rpc::get_token_data;
 
 use abi::lb_factory as traderjoe_v2_factory_events;
 use substreams::log;
 use substreams::Hex;
+use substreams::scalar::BigDecimal;
 use substreams_ethereum::{pb::eth, Event};
 
 use utils::constants::DEXCANDLES_FACTORY;
@@ -31,6 +36,8 @@ fn map_factory_events(
                         if let Some(event) =
                             traderjoe_v2_factory_events::events::FeeParametersSet::match_and_decode(log)
                         {
+
+                            let protocol_share_pct_value =  BigDecimal::from_str(event.protocol_share.to_string().as_str()).unwrap() / BigDecimal::from_str("1000").unwrap();
                             return Some(traderjoe_v2::FeeParametersSet {
                                 evt_tx_hash: Hex(&view.transaction.hash).to_string(),
                                 evt_index: log.ordinal,
@@ -42,6 +49,7 @@ fn map_factory_events(
                                 reduction_factor: event.reduction_factor.to_string(),
                                 variable_fee_control: event.variable_fee_control.to_string(),
                                 protocol_share: event.protocol_share.to_string(),
+                                protocol_share_pct:protocol_share_pct_value.to_string(),
                                 bin_step: event.bin_step.to_string(),
                                 max_volatility_accumulator: event
                                     .max_volatility_accumulated
@@ -93,7 +101,15 @@ fn map_factory_events(
 
                 let token_x_data = get_token_data(&event.token_x);
                 let token_y_data = get_token_data(&event.token_y);
+                let bin_step = get_bin_step();
+                // let bin_step = get_bin_step();
 
+                let lb_name = format!("{}-{}-{}", token_x_data.1, token_y_data.1, &bin_step);
+
+                let base_factor = BigDecimal::from_str(&bin_step).unwrap();
+
+                // base fee in 1e18 precision: baseFactor * binStep * 1e10
+                let base_fee = BigDecimal::from_str(&bin_step).unwrap() * base_factor * &*BIG_DECIMAL_1E10;
 
     
                             return Some(traderjoe_v2::LbPair {
@@ -103,8 +119,10 @@ fn map_factory_events(
                                 evt_block_number: blk.number,
                                 bin_step: event.bin_step.to_string(),
                                 lb_pair: Hex(event.lb_pair).to_string(),
+                                base_fee_pct: base_fee.to_string(),
                                 pid: event.pid.to_string(),
                                 factory: append_0x(&Hex(DEXCANDLES_FACTORY).to_string()),
+                                name: lb_name,
                                 token_x: Some(traderjoe_v2::Token {
                                     address: append_0x(&Hex(event.token_x).to_string()),
                                     decimals: bigint_to_u64(&token_x_data.2),

@@ -4,7 +4,7 @@ use std::str::FromStr;
 use crate::abi;
 use substreams::scalar::{BigDecimal, BigInt};
 
-use super::constants::BIG_DECIMAL_1E18;
+use super::constants::BIG_DECIMAL_1E10;
 use super::constants::DEX_LENS;
 use super::constants::JOE_DEX_LENS_USD_DECIMALS;
 use super::constants::WAVAX_ADDRESS;
@@ -48,7 +48,7 @@ pub fn get_token_price_in_avax(token_address: &Vec<u8>) -> BigDecimal {
     };
     let token_price = price.call(DEX_LENS.to_vec()).unwrap_or(BigInt::zero());
 
-    let price_in_avax = str_to_bigdecimal(&token_price.to_string()) / BIG_DECIMAL_1E18;
+    let price_in_avax = str_to_bigdecimal(&token_price.to_string()) / &*BIG_DECIMAL_1E10;
     price_in_avax
 }
 
@@ -58,7 +58,7 @@ pub fn get_avax_price_in_usd() -> BigDecimal {
     };
     let token_price = price.call(DEX_LENS.to_vec()).unwrap_or(BigInt::zero());
 
-    let price_usd = str_to_bigdecimal(&token_price.to_string()) / JOE_DEX_LENS_USD_DECIMALS;
+    let price_usd = str_to_bigdecimal(&token_price.to_string()) / &*JOE_DEX_LENS_USD_DECIMALS;
     price_usd
 }
 

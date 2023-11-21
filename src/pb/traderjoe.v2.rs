@@ -42,6 +42,8 @@ pub struct FeeParametersSet {
     pub protocol_share: ::prost::alloc::string::String,
     #[prost(string, tag="12")]
     pub max_volatility_accumulator: ::prost::alloc::string::String,
+    #[prost(string, tag="13")]
+    pub protocol_share_pct: ::prost::alloc::string::String,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

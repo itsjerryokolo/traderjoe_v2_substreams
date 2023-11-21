@@ -28,6 +28,9 @@ message FeeParametersSet {
     string variable_fee_control = 10;
     string protocol_share = 11;
     string max_volatility_accumulator = 12;
+    string protocol_share_pct = 13;
+
+    
 }
 
 message FlashLoanFeeSet {

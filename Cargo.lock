@@ -1051,6 +1051,7 @@ dependencies = [
  "getrandom",
  "hex",
  "hex-literal 0.4.1",
+ "lazy_static",
  "num-bigint",
  "num-traits",
  "pad",

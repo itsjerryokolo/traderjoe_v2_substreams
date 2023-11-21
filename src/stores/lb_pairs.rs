@@ -368,8 +368,8 @@ pub fn store_volumes(
     let prev_day_id = day_id - 1;
     let prev_hour_id = hour_id - 1;
 
-    store.delete_prefix(0, &format!("TokenDayData:{prev_day_id}:"));
-    store.delete_prefix(0, &format!("TokenHourData:{prev_hour_id}:"));
+    store.delete_prefix(0, &format!("TokenDayData:{prev_day_id}"));
+    store.delete_prefix(0, &format!("TokenHourData:{prev_hour_id}"));
 
     for pair_tvl in events.swaps {
         let pair = pairs.must_get_last(generate_key("Pair", &pair_tvl.id));
@@ -391,7 +391,7 @@ pub fn store_volumes(
                 format!("TokenDayData:{day_id}:{pool_address}"),
                 format!("TokenHourData:{hour_id}:{pool_address}"),
             ],
-            &low.to_string(),
+            &volume.unwrap().address.to_string(),
         )
     }
 }
