@@ -106,10 +106,10 @@ fn map_factory_events(
 
                 let lb_name = format!("{}-{}-{}", token_x_data.1, token_y_data.1, &bin_step);
 
-                let base_factor = BigDecimal::from_str(&bin_step).unwrap();
+                let base_factor: BigDecimal = BigDecimal::from_str(&bin_step).unwrap();
 
                 // base fee in 1e18 precision: baseFactor * binStep * 1e10
-                let base_fee = BigDecimal::from_str(&bin_step).unwrap() * base_factor * &*BIG_DECIMAL_1E10;
+                let base_fee = BigDecimal::from_str(&bin_step).unwrap() * base_factor * BigDecimal::from_str(&*BIG_DECIMAL_1E10.to_string()).unwrap();
 
     
                             return Some(traderjoe_v2::LbPair {

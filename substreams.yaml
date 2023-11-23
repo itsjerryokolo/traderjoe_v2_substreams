@@ -87,6 +87,26 @@ modules:
       - store: store_pairs
       - map: map_factory_events
 
+    #Prices
+  - name: store_bundles
+    kind: store
+    initialBlock: 17821282
+    updatePolicy: set
+    valueType: proto:traderjoe.v2.Bundle
+    inputs:
+      - store: store_pairs
+      - map: map_template_events
+
+  - name: store_prices
+    kind: store
+    initialBlock: 17821282
+    updatePolicy: set
+    valueType: bigdecimal
+    inputs:
+      - store: store_pairs
+      - store: store_bundles
+      - map: map_template_events
+
 ##############################################
 #                 GRAPH OUT                  #
 ##############################################

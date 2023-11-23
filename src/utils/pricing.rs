@@ -69,8 +69,8 @@ pub fn get_tracked_liquidity_usd(
     token_y: &Vec<u8>,
     avax_price_usd: BigDecimal,
 ) -> BigDecimal {
-    let price_x_usd = get_token_price_in_avax(token_x) * avax_price_usd;
-    let price_y_usd = get_token_price_in_avax(token_y) * avax_price_usd;
+    let price_x_usd = get_token_price_in_avax(token_x) * avax_price_usd.clone();
+    let price_y_usd = get_token_price_in_avax(token_y) * avax_price_usd.clone();
 
     token_x_amount * price_x_usd + token_y_amount * price_y_usd
 }
@@ -82,8 +82,8 @@ pub fn get_tracked_volume_usd(
     token_y: &Vec<u8>,
     avax_price_usd: BigDecimal,
 ) -> BigDecimal {
-    let price_x_usd = get_token_price_in_avax(token_x) * avax_price_usd;
-    let price_y_usd = get_token_price_in_avax(token_y) * avax_price_usd;
+    let price_x_usd = get_token_price_in_avax(token_x) * avax_price_usd.clone();
+    let price_y_usd = get_token_price_in_avax(token_y) * avax_price_usd.clone();
 
     (token_x_amount * price_x_usd + token_y_amount * price_y_usd)
         / BigDecimal::from_str("2").unwrap()

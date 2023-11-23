@@ -3,12 +3,14 @@ use crate::{abi, utils::pricing::get_avax_price_in_usd};
 use crate::pb::traderjoe::v2 as traderjoe_v2;
 
 use abi::lb_pair as traderjoe_v2_pair_events;
+use substreams::store::StoreGetProto;
 use substreams::{log, Hex};
 use substreams_ethereum::{pb::eth, Event};
 
 #[substreams::handlers::map]
 fn map_template_events(
     blk: eth::v2::Block,
+    pair: StoreGetProto<traderjoe_v2::LbPair>,
 ) -> Result<traderjoe_v2::TemplateEvents, substreams::errors::Error> {
     log::info!("Template Handler - 1");
 

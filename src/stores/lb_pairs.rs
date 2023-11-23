@@ -1,5 +1,6 @@
 use crate::utils::constants::DEXCANDLES_FACTORY;
 use crate::utils::helper::{append_0x, bigint_to_u64, generate_key};
+use crate::utils::pricing::get_token_price_in_avax;
 use crate::utils::rpc::get_token_data;
 
 use ethabi::token;
@@ -7,7 +8,8 @@ use std::str::FromStr;
 use substreams::pb::substreams::Clock;
 use substreams::scalar::BigDecimal;
 use substreams::store::{
-    StoreAdd, StoreAddBigInt, StoreDelete, StoreGetProto, StoreSetProto, StoreSetString,
+    StoreAdd, StoreAddBigInt, StoreDelete, StoreGetProto, StoreSetBigDecimal, StoreSetProto,
+    StoreSetString,
 };
 
 use substreams::{
@@ -43,6 +45,19 @@ pub fn store_total_tx_counts(
         let pool_address = &event.lb_pair;
         let token0_addr = event.token_x.unwrap().address.to_string();
         let token1_addr = event.token_y.unwrap().address.to_string();
+
+        // const id = binId || lbPair.activeId;
+        // const tokenX = loadToken(Address.fromString(lbPair.tokenX));
+        // const tokenY = loadToken(Address.fromString(lbPair.tokenY));
+
+        // tokenX.derivedAVAX = getTokenPriceInAVAX(tokenX);
+        // tokenY.derivedAVAX = getTokenPriceInAVAX(tokenY);
+
+        // const bundle = loadBundle();
+        // const tokenXPriceUSD = tokenX.derivedAVAX.times(bundle.avaxPriceUSD);
+        // const tokenYPriceUSD = tokenY.derivedAVAX.times(bundle.avaxPriceUSD);
+        // lbPair.tokenXPriceUSD = tokenXPriceUSD;
+        // lbPair.tokenYPriceUSD = tokenYPriceUSD;
 
         output.add_many(
             event.evt_index,
@@ -251,106 +266,49 @@ pub fn store_pair_count(i: traderjoe_v2::FactoryEvents, o: StoreAddBigInt) {
 }
 
 #[substreams::handlers::store]
-pub fn store_pairs_tvl(
-    clock: Clock,
-    pairs: StoreGetProto<traderjoe_v2::LbPair>,
-    bundle: StoreGetProto<traderjoe_v2::Bundle>,
-    events: traderjoe_v2::TemplateEvents,
-    store: StoreAddBigInt,
-) {
-    let timestamp_seconds = clock.timestamp.unwrap().seconds;
-    let day_id: i64 = timestamp_seconds / 86400;
-    let hour_id: i64 = timestamp_seconds / 3600;
-    let prev_day_id = day_id - 1;
-    let prev_hour_id = hour_id - 1;
-
-    store.delete_prefix(0, &format!("LbPairDayData:{prev_day_id}:"));
-    store.delete_prefix(0, &format!("LbPairHourData:{prev_hour_id}:"));
-
-    for pair_tvl in events.swaps {
-        let pair = pairs.must_get_last(generate_key("Pair", &pair_tvl.id));
-
-        let pool_address = &pair.id;
-
-        let token0_address = pair.token_x.unwrap().address;
-        let token1_address = pair.token_y.unwrap().address;
-
-        let amount_x_in = 1;
-        let amount_x_out = 1;
-
-        let amount_y_in = 1;
-        let amount_y_out = 1;
-
-        let reserve_x = amount_x_in - amount_x_out;
-        let reserve_y = amount_y_in - amount_y_out;
-
-        let tvl = amount_x_in - amount_x_out;
-
-        store.add_many(
-            pair.log_ordinal,
-            &vec![
-                format!("Pair:{pool_address}"),
-                format!("Pair:{token0_address}:{token1_address}"),
-                format!("Pair:{token1_address}:{token0_address}"),
-                format!("LbPairDayData:{day_id}:{pool_address}"),
-                format!("LbPairHourData:{hour_id}:{pool_address}"),
-                format!("TokenDayData:{day_id}:{pool_address}"),
-                format!("TokenHourData:{hour_id}:{pool_address}"),
-            ],
-            &BigInt::try_from(tvl).unwrap(),
-        )
-    }
-}
-
-#[substreams::handlers::store]
-pub fn store_token_prices(
-    clock: Clock,
+pub fn store_prices(
     pairs: StoreGetProto<traderjoe_v2::LbPair>,
     bundles: StoreGetProto<traderjoe_v2::Bundle>,
     events: traderjoe_v2::TemplateEvents,
-    store: StoreSetString,
+    store: StoreSetBigDecimal,
 ) {
-    let timestamp_seconds = clock.timestamp.unwrap().seconds;
-    let day_id: i64 = timestamp_seconds / 86400;
-    let hour_id: i64 = timestamp_seconds / 3600;
-    let prev_day_id = day_id - 1;
-    let prev_hour_id = hour_id - 1;
-
-    store.delete_prefix(0, &format!("LbPairDayData:{prev_day_id}:"));
-    store.delete_prefix(0, &format!("LbPairHourData:{prev_hour_id}:"));
-
     for pair_tvl in events.swaps {
         let pair = pairs.must_get_last(generate_key("Pair", &pair_tvl.id));
+        let pool_address = &pair.id;
+        let token_x_address = pair.token_x.unwrap().address;
+        let token_y_address = pair.token_y.unwrap().address;
+
         let bundle = bundles.must_get_last(generate_key("Bundle", "1"));
 
-        let pool_address = &pair.id;
-        let avax_price_usd = bundle.avax_price_usd;
+        let token_x_derived_avax = get_token_price_in_avax(&token_x_address.clone().into_bytes());
+        let token_y_derived_avax = get_token_price_in_avax(&token_y_address.clone().into_bytes());
 
-        let token0_address = pair.token_x.unwrap().address;
-        let token1_address = pair.token_y.unwrap().address;
+        let token_x_price_usd =
+            token_x_derived_avax.clone() * BigDecimal::from_str(&bundle.avax_price_usd).unwrap();
+        let token_y_price_usd =
+            token_x_derived_avax.clone() * BigDecimal::from_str(&bundle.avax_price_usd).unwrap();
 
-        let amount_x_in = avax_price_usd;
-        let amount_x_out = 1;
-
-        let amount_y_in = 1;
-        let amount_y_out = 1;
-
-        let reserve_x = 3 - 1;
-        let reserve_y = amount_y_in - amount_y_out;
-
-        let price = 4 - 3;
-
-        store.set_many(
+        store.set(
             pair.log_ordinal,
-            &vec![
-                format!("pool:{pool_address}"),
-                format!("pair:{token0_address}:{token1_address}"),
-                format!("pair:{token1_address}:{token0_address}"),
-                format!("LbPairDayData:{day_id}:{pool_address}"),
-                format!("LbPairHourData:{hour_id}:{pool_address}"),
-            ],
-            &price.to_string(),
-        )
+            format!("Pair:{pool_address}"),
+            &token_x_price_usd,
+        );
+        store.set(
+            pair.log_ordinal,
+            format!("Pair:{pool_address}"),
+            &token_y_price_usd,
+        );
+        store.set(
+            pair.log_ordinal,
+            format!("Token:{token_x_address}"),
+            &token_x_derived_avax,
+        );
+
+        store.set(
+            pair.log_ordinal,
+            format!("Token:{token_y_address}"),
+            &token_y_derived_avax,
+        );
     }
 }
 
@@ -391,7 +349,7 @@ pub fn store_volumes(
                 format!("TokenDayData:{day_id}:{pool_address}"),
                 format!("TokenHourData:{hour_id}:{pool_address}"),
             ],
-            &volume.unwrap().address.to_string(),
+            &pool_address.to_string(),
         )
     }
 }
