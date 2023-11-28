@@ -346,7 +346,7 @@ message LBPair {
   uint64 evt_index = 30;
   uint64 evt_block_number = 31;
   string pid = 32;
-  string lb_pair = 33;
+  bytes lb_pair = 33;
 }
 
 

@@ -42,7 +42,7 @@ pub fn store_total_tx_counts(
     output.delete_prefix(0, &format!("TokenHourData:{prev_hour_id}:"));
 
     for event in factory_events.lb_pairs {
-        let pool_address = &event.lb_pair;
+        let pool_address = &Hex(&event.lb_pair).to_string();
         let token0_addr = event.token_x.unwrap().address.to_string();
         let token1_addr = event.token_y.unwrap().address.to_string();
 
@@ -250,7 +250,11 @@ pub fn store_tokens(
 #[substreams::handlers::store]
 pub fn store_pairs(i: traderjoe_v2::FactoryEvents, o: StoreSetProto<traderjoe_v2::LbPair>) {
     for pair in i.lb_pairs {
-        o.set(0, generate_key("Pair", &pair.lb_pair.to_string()), &pair);
+        o.set(
+            0,
+            generate_key("Pair", &Hex(&pair.lb_pair).to_string()),
+            &pair,
+        );
     }
 }
 

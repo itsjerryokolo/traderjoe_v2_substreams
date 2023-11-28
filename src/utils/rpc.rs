@@ -2,7 +2,7 @@ use crate::abi;
 
 use substreams_ethereum::rpc::RpcBatch;
 
-use super::constants::DEXCANDLES_FACTORY;
+use super::constants::BIG_INT_ONE;
 
 pub fn get_token_data(token_address: &Vec<u8>) -> (String, String, String, String) {
     let contract_address = token_address;
@@ -41,9 +41,20 @@ pub fn get_token_data(token_address: &Vec<u8>) -> (String, String, String, Strin
     tup
 }
 
-pub fn get_bin_step() -> String {
-    let fee_parameters = abi::lb_pair::functions::FeeParameters {};
-    let fee_parameters = fee_parameters.call(DEXCANDLES_FACTORY.to_vec()).unwrap();
+pub fn get_bin_step(lb_pair_address: &Vec<u8>) -> String {
+    let batch_calls = RpcBatch::new();
+    let responses = batch_calls
+        .add(
+            abi::lb_pair::functions::FeeParameters {},
+            lb_pair_address.clone(),
+        )
+        .execute()
+        .unwrap()
+        .responses;
 
-    fee_parameters.0.to_string()
+    let fee = match RpcBatch::decode::<_, abi::lb_pair::functions::FeeParameters>(&responses[0]) {
+        Some(fee_parameters) => fee_parameters.0.to_string(),
+        None => "0".to_string(),
+    };
+    fee
 }

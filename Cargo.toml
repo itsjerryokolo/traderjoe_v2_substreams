@@ -25,7 +25,7 @@ prost-types = "0.11.0"
 
 
 # Use latest from https://crates.io/crates/substreams
-substreams = "0.5.10"
+substreams = "0.5.11"
 # Use latest from https://crates.io/crates/substreams-ethereum
 substreams-ethereum = "0.9.5"
 

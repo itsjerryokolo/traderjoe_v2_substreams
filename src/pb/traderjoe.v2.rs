@@ -581,8 +581,8 @@ pub struct LbPair {
     pub evt_block_number: u64,
     #[prost(string, tag="32")]
     pub pid: ::prost::alloc::string::String,
-    #[prost(string, tag="33")]
-    pub lb_pair: ::prost::alloc::string::String,
+    #[prost(bytes="vec", tag="33")]
+    pub lb_pair: ::prost::alloc::vec::Vec<u8>,
 }
 #[allow(clippy::derive_partial_eq_without_eq)]
 #[derive(Clone, PartialEq, ::prost::Message)]

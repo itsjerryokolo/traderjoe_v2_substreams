@@ -1,9 +1,10 @@
+use crate::utils::helper::generate_key;
 use crate::{abi, utils::pricing::get_avax_price_in_usd};
 
 use crate::pb::traderjoe::v2 as traderjoe_v2;
 
 use abi::lb_pair as traderjoe_v2_pair_events;
-use substreams::store::StoreGetProto;
+use substreams::store::{StoreGet, StoreGetProto};
 use substreams::{log, Hex};
 use substreams_ethereum::{pb::eth, Event};
 
@@ -170,6 +171,13 @@ fn map_template_events(
                     if let Some(event) =
                         traderjoe_v2_pair_events::events::TransferBatch::match_and_decode(log)
                     {
+                        let pairs =
+                            pair.get_last(generate_key("Pair", &Hex(&log.address).to_string()));
+
+                        if pairs.is_none() {
+                            return None;
+                        }
+
                         return Some(traderjoe_v2::TransferBatch {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
                             evt_index: log.ordinal,
@@ -193,6 +201,12 @@ fn map_template_events(
                     if let Some(event) =
                         traderjoe_v2_pair_events::events::TransferSingle::match_and_decode(log)
                     {
+                        let pairs =
+                            pair.get_last(generate_key("Pair", &Hex(&log.address).to_string()));
+
+                        if pairs.is_none() {
+                            return None;
+                        }
                         return Some(traderjoe_v2::TransferSingle {
                             evt_tx_hash: Hex(&view.transaction.hash).to_string(),
                             evt_index: log.ordinal,

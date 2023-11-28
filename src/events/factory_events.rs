@@ -101,8 +101,7 @@ fn map_factory_events(
 
                 let token_x_data = get_token_data(&event.token_x);
                 let token_y_data = get_token_data(&event.token_y);
-                let bin_step = get_bin_step();
-                // let bin_step = get_bin_step();
+                let bin_step = get_bin_step(&event.lb_pair);
 
                 let lb_name = format!("{}-{}-{}", token_x_data.1, token_y_data.1, &bin_step);
 
@@ -118,7 +117,7 @@ fn map_factory_events(
                                 evt_block_time: Some(blk.timestamp().to_owned()),
                                 evt_block_number: blk.number,
                                 bin_step: event.bin_step.to_string(),
-                                lb_pair: Hex(event.lb_pair).to_string(),
+                                lb_pair: event.lb_pair,
                                 base_fee_pct: base_fee.to_string(),
                                 pid: event.pid.to_string(),
                                 factory: append_0x(&Hex(DEXCANDLES_FACTORY).to_string()),

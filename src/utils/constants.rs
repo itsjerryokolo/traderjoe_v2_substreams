@@ -20,14 +20,15 @@ pub const CANDLESTICK_PERIODS: [i32; 6] = [
 
 lazy_static! {
     pub static ref JOE_DEX_LENS_USD_DECIMALS: BigDecimal =
-        BigDecimal::from_str("1,000,000,000,000,000,000").unwrap();
-    pub static ref BIG_DECIMAL_1E6: BigDecimal = BigDecimal::from_str("1,000,000").unwrap();
-    pub static ref BIG_DECIMAL_1E10: BigDecimal = BigDecimal::from_str("10,000,000,000").unwrap();
-    pub static ref BIG_DECIMAL_1E12: BigDecimal =
-        BigDecimal::from_str("1,000,000,000,000").unwrap();
+        BigDecimal::from_str("1000000000000000000").unwrap();
+    pub static ref BIG_DECIMAL_1E6: BigDecimal = BigDecimal::from_str("1000000").unwrap();
+    pub static ref BIG_DECIMAL_1E10: BigDecimal = BigDecimal::from_str("10000000000").unwrap();
+    pub static ref BIG_DECIMAL_1E12: BigDecimal = BigDecimal::from_str("1000000000000").unwrap();
     pub static ref BIG_DECIMAL_1E18: BigDecimal =
-        BigDecimal::from_str("1,000,000,000,000,000,000").unwrap();
+        BigDecimal::from_str("1000000000000000000").unwrap();
     pub static ref BIG_DECIMAL_ZERO: BigDecimal = BigDecimal::from_str("0").unwrap();
     pub static ref BIG_DECIMAL_ONE: BigDecimal = BigDecimal::from_str("1").unwrap();
     pub static ref BIG_DECIMAL_HUNDRED: BigDecimal = BigDecimal::from_str("100").unwrap();
+    pub static ref BIG_ZERO: BigInt = BigInt::zero();
+    pub static ref BIG_INT_ONE: BigInt = BigInt::from_str("1").unwrap();
 }

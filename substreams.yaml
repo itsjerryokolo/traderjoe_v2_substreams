@@ -39,6 +39,7 @@ modules:
     initialBlock: 17821282
     inputs:
       - source: sf.ethereum.type.v2.Block
+      - store: store_pairs
     output:
       type: proto:traderjoe.v2.TemplateEvents
 
