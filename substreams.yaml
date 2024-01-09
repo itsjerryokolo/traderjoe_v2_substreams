@@ -28,7 +28,7 @@ modules:
 
   - name: map_factory_events
     kind: map
-    initialBlock: 47891979
+    initialBlock: 17821282
     inputs:
       - source: sf.ethereum.type.v2.Block
     output:
@@ -36,7 +36,7 @@ modules:
 
   - name: map_template_events
     kind: map
-    initialBlock: 47891979
+    initialBlock: 17821282
     inputs:
       - source: sf.ethereum.type.v2.Block
       - store: store_pairs
@@ -53,7 +53,7 @@ modules:
     #Pairs
   - name: store_pairs
     kind: store
-    initialBlock: 47891979
+    initialBlock: 17821282
     updatePolicy: set
     valueType: proto:traderjoe.v2.LBPair
     inputs:
@@ -61,7 +61,7 @@ modules:
 
   - name: store_pair_count
     kind: store
-    initialBlock: 47891979
+    initialBlock: 17821282
     updatePolicy: add
     valueType: bigint
     inputs:
@@ -70,7 +70,7 @@ modules:
     #Transactions
   - name: store_total_tx_counts
     kind: store
-    initialBlock: 47891979
+    initialBlock: 17821282
     updatePolicy: add
     valueType: bigint
     inputs:
@@ -81,7 +81,7 @@ modules:
     #Tokens
   - name: store_tokens
     kind: store
-    initialBlock: 47891979
+    initialBlock: 17821282
     updatePolicy: set
     valueType: proto:traderjoe.v2.Token
     inputs:
@@ -91,7 +91,7 @@ modules:
     #Prices
   - name: store_bundles
     kind: store
-    initialBlock: 47891979
+    initialBlock: 17821282
     updatePolicy: set
     valueType: proto:traderjoe.v2.Bundle
     inputs:
@@ -100,7 +100,7 @@ modules:
 
   - name: store_prices
     kind: store
-    initialBlock: 47891979
+    initialBlock: 17821282
     updatePolicy: set
     valueType: bigdecimal
     inputs:
@@ -114,7 +114,7 @@ modules:
 
   - name: graph_out
     kind: map
-    initialBlock: 47891979
+    initialBlock: 17821282
     inputs:
       - source: sf.substreams.v1.Clock
       - store: store_pairs

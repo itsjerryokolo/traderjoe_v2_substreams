@@ -5,9 +5,9 @@ use std::str::FromStr;
 use substreams::scalar::{BigDecimal, BigInt};
 
 // Contracts
-pub const DEXCANDLES_FACTORY: [u8; 20] = hex!("1886D09C9Ade0c5DB822D85D21678Db67B6c2982");
-pub const DEX_LENS: [u8; 20] = hex!("f450749aeA1c5feF27Ae0237C56FecC43f6bE244");
-pub const WAVAX_ADDRESS: [u8; 20] = hex!("82aF49447D8a07e3bd95BD0d56f35241523fBab1");
+pub const DEXCANDLES_FACTORY: [u8; 20] = hex!("DC8d77b69155c7E68A95a4fb0f06a71FF90B943a");
+pub const DEX_LENS: [u8; 20] = hex!("034389902aD4772c03102a3414EC71901ef2a5ad");
+pub const WAVAX_ADDRESS: [u8; 20] = hex!("85f138bfEE4ef8e540890CFb48F620571d67Eda3");
 
 pub const CANDLESTICK_PERIODS: [i32; 6] = [
     5 * 60,           // 5m

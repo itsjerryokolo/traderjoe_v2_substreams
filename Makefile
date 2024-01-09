@@ -26,7 +26,7 @@ run: build
 
 .PHONY: gui
 gui: build
-	substreams gui  substreams.yaml map_factory_events -s 47891979 -t +50000
+	substreams gui  substreams.yaml map_factory_events -s 17821282 -t +50000
 
 	# substreams gui substreams.yaml map_factory_events $(if $(START_BLOCK),-s $(START_BLOCK)) $(if $(STOP_BLOCK),-t $(STOP_BLOCK))
 
@@ -36,15 +36,15 @@ codegen:
 
 PHONY:go
 go: 
-	substreams gui -e arb-one.streamingfast.io:443 substreams.yaml graph_out -s 47891979 -t +1000000 --debug-modules-output=store_pair_count
+	substreams gui -e mainnet.eth.streamingfast.io:443 substreams.yaml graph_out -s 17821282 -t +1000000 --debug-modules-output=store_pair_count
 
 PHONY:te
 te: 
-	substreams gui  substreams.yaml map_template_events -s 47891979 -t +50000
+	substreams gui  substreams.yaml map_template_events -s 17821282 -t +50000
 
 PHONY:ga
 ga: 
-	substreams run -e arb-one.streamingfast.io:443 substreams.yaml graph_out -s 47891979 -t +1000000 --debug-modules-output=store_pair_count -o json
+	substreams run -e mainnet.eth.streamingfast.io:443 substreams.yaml graph_out -s 17821282 -t +1000000 --debug-modules-output=store_pair_count -o json
 
 
 .PHONY: pack
